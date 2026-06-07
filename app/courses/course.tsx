@@ -1,6 +1,5 @@
 ﻿import { Star, Clock, Users } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/image'
 
 const courses = [
   {
@@ -71,11 +70,10 @@ export const PopularCourses = () => {
               className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all"
             >
               <div className="relative h-48">
-                <Image
+                  <img
                   src={course.image}
                   alt={course.title}
-                  fill
-                  className="object-cover"
+                    className="w-full h-full object-cover"
                 />
                 <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-md text-xs font-semibold">
                   {course.category}

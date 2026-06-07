@@ -82,7 +82,7 @@ const ProfileTab = () => {
     <>
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Cover Photo & Main Profile Card */}
-      <div className="rounded-[32px] bg-white shadow-sm overflow-hidden border border-gray-100 relative">
+      <div className="rounded-[32px] bg-white dark:bg-slate-900 shadow-sm overflow-hidden border border-slate-100 dark:border-slate-800 relative transition-colors">
       <div className="h-32 sm:h-48 w-full bg-slate-900 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] relative overflow-hidden flex items-center justify-center">
          <div className="absolute inset-0 bg-gradient-to-r from-primary-600/90 via-indigo-600/90 to-purple-600/90"></div>
         {/* Abstract background shapes */}
@@ -90,9 +90,9 @@ const ProfileTab = () => {
         <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/10 rounded-full blur-2xl translate-y-1/3 -translate-x-1/4"></div>
       </div>
       <div className="px-6 sm:px-10 pb-8 relative">
-        <div className="flex flex-col sm:flex-row gap-6 sm:items-end -mt-12 sm:-mt-16 mb-4 sm:mb-0 relative z-10">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-end -mt-12 sm:-mt-16 mb-4 sm:mb-0 relative z-10 text-center sm:text-left">
           <div 
-            className="w-28 h-28 sm:w-36 sm:h-36 rounded-[2rem] bg-white p-2 shadow-xl border border-gray-100 relative group cursor-pointer shrink-0"
+            className="w-28 h-28 sm:w-36 sm:h-36 rounded-[2rem] bg-white dark:bg-slate-800 p-2 shadow-xl border border-slate-100 dark:border-slate-700 relative group cursor-pointer shrink-0"
             onClick={() => setShowImageUploadModal(true)}
           >
             <div className="w-full h-full rounded-[1.5rem] bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center text-white text-3xl sm:text-4xl font-black overflow-hidden transition-all duration-300 relative">
@@ -105,22 +105,22 @@ const ProfileTab = () => {
             <div className="absolute bottom-2 right-2 w-6 h-6 bg-emerald-500 border-[3px] border-white rounded-full shadow-sm" title="Online"></div>
           </div>
           <div className="flex-1 pb-2">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-black text-gray-900 flex items-center gap-2">Alex Johnson <CheckCheck className="w-6 h-6 text-primary-500" /></h2>
-                <p className="text-slate-600 font-medium text-sm mt-1 flex items-center gap-2">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white flex items-center justify-center sm:justify-start gap-2">Alex Johnson <CheckCheck className="w-6 h-6 text-primary-500" /></h2>
+                <p className="text-slate-600 dark:text-slate-400 font-medium text-sm mt-1 flex items-center justify-center sm:justify-start gap-2">
                   <span>Computer Science Student • 3rd Year</span>
                 </p>
-                <div className="flex items-center gap-4 mt-2">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-4 mt-3 sm:mt-2">
                   <span className="flex items-center gap-1 text-xs font-bold text-slate-400 uppercase tracking-wider"><MapPin className="w-3.5 h-3.5"/> Bangalore, IN</span>
                   <span className="flex items-center gap-1 text-xs font-bold text-slate-400 uppercase tracking-wider"><Calendar className="w-3.5 h-3.5"/> Joined Sep 2023</span>
                 </div>
               </div>
-              <div className="flex gap-3">
-                <button className="px-5 py-2.5 bg-primary-50 text-primary-600 rounded-xl font-bold hover:bg-primary-100 transition border border-primary-100 shadow-sm flex items-center gap-2 text-sm shrink-0">
+              <div className="flex w-full sm:w-auto justify-center sm:justify-start gap-3 mt-4 sm:mt-0">
+                <button className="flex-1 sm:flex-none justify-center px-5 py-2.5 bg-primary-50 text-primary-600 rounded-xl font-bold hover:bg-primary-100 transition border border-primary-100 shadow-sm flex items-center gap-2 text-sm shrink-0">
                   <Download className="w-4 h-4" /> CV
                 </button>
-                <button className="px-5 py-2.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition shadow-sm hover:shadow-md flex items-center gap-2 text-sm shrink-0">
+                <button className="flex-1 sm:flex-none justify-center px-5 py-2.5 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-xl font-bold hover:bg-slate-800 dark:hover:bg-white transition shadow-sm hover:shadow-md flex items-center gap-2 text-sm shrink-0">
                   <Edit3 className="w-4 h-4" /> Edit
                 </button>
               </div>
@@ -128,22 +128,22 @@ const ProfileTab = () => {
           </div>
         </div>
         
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-gray-100">
-          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 transition-colors cursor-default">
-            <div className="w-12 h-12 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center shrink-0"><Flame className="w-6 h-6"/></div>
-            <div><p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Current Streak</p><p className="font-black text-gray-900 text-base">30 Days</p></div>
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-default">
+            <div className="w-12 h-12 rounded-full bg-orange-50 dark:bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0"><Flame className="w-6 h-6"/></div>
+            <div><p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Current Streak</p><p className="font-black text-slate-900 dark:text-white text-base">30 Days</p></div>
           </div>
-          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 transition-colors cursor-default">
-            <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0"><Target className="w-6 h-6"/></div>
-            <div><p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Avg Score</p><p className="font-black text-gray-900 text-base">86%</p></div>
+          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-default">
+            <div className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0"><Target className="w-6 h-6"/></div>
+            <div><p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Avg Score</p><p className="font-black text-slate-900 dark:text-white text-base">86%</p></div>
           </div>
-          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 transition-colors cursor-default">
-            <div className="w-12 h-12 rounded-full bg-sky-50 text-sky-500 flex items-center justify-center shrink-0"><BookOpen className="w-6 h-6"/></div>
-            <div><p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Courses</p><p className="font-black text-gray-900 text-base">8 Enrolled</p></div>
+          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-default">
+            <div className="w-12 h-12 rounded-full bg-sky-50 dark:bg-sky-500/10 text-sky-500 flex items-center justify-center shrink-0"><BookOpen className="w-6 h-6"/></div>
+            <div><p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Courses</p><p className="font-black text-slate-900 dark:text-white text-base">8 Enrolled</p></div>
           </div>
-          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 transition-colors cursor-default">
-            <div className="w-12 h-12 rounded-full bg-purple-50 text-purple-500 flex items-center justify-center shrink-0"><Award className="w-6 h-6"/></div>
-            <div><p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Certificates</p><p className="font-black text-gray-900 text-base">5 Earned</p></div>
+          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-default">
+            <div className="w-12 h-12 rounded-full bg-purple-50 dark:bg-purple-500/10 text-purple-500 flex items-center justify-center shrink-0"><Award className="w-6 h-6"/></div>
+            <div><p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Certificates</p><p className="font-black text-slate-900 dark:text-white text-base">5 Earned</p></div>
           </div>
         </div>
       </div>
@@ -152,50 +152,50 @@ const ProfileTab = () => {
     <div className="grid lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2 space-y-6">
         {/* About & Academic */}
-        <div className="rounded-[32px] bg-white p-6 sm:p-8 shadow-sm border border-gray-100 relative overflow-hidden">
-          <Bookmark className="absolute -bottom-4 -right-4 w-32 h-32 text-slate-50 -rotate-12" />
-          <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2 relative z-10"><User className="w-6 h-6 text-primary-500"/> About Me</h3>
-          <p className="text-[15px] text-gray-600 leading-relaxed mb-8 relative z-10">
+        <div className="rounded-[32px] bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm border border-slate-100 dark:border-slate-800 relative overflow-hidden transition-colors">
+          <Bookmark className="absolute -bottom-4 -right-4 w-32 h-32 text-slate-50 dark:text-slate-800/50 -rotate-12" />
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2 relative z-10"><User className="w-6 h-6 text-primary-500"/> About Me</h3>
+          <p className="text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed mb-8 relative z-10">
             Passionate Computer Science student with a keen interest in full-stack web development and artificial intelligence. Always eager to learn new technologies and build projects that solve real-world problems. Currently focusing on mastering the React ecosystem and cloud architectures.
           </p>
           
           <div className="grid sm:grid-cols-2 gap-4 relative z-10">
-            <div className="p-5 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-100 hover:border-primary-100 transition-all hover:shadow-md hover:-translate-y-1">
+            <div className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-primary-200 dark:hover:border-primary-500/30 transition-all hover:shadow-md hover:-translate-y-1">
               <div className="flex items-center gap-3 mb-2">
                 <GraduationCap className="w-5 h-5 text-indigo-500" />
                 <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">University</p>
               </div>
-              <p className="font-bold text-gray-900 text-sm">Tech Institute of India</p>
+              <p className="font-bold text-slate-900 dark:text-white text-sm">Tech Institute of India</p>
             </div>
-            <div className="p-5 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-100 hover:border-primary-100 transition-all hover:shadow-md hover:-translate-y-1">
+            <div className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-primary-200 dark:hover:border-primary-500/30 transition-all hover:shadow-md hover:-translate-y-1">
               <div className="flex items-center gap-3 mb-2">
                 <BookOpen className="w-5 h-5 text-sky-500" />
                 <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Degree</p>
               </div>
-              <p className="font-bold text-gray-900 text-sm">B.Tech in Computer Science</p>
+              <p className="font-bold text-slate-900 dark:text-white text-sm">B.Tech in Computer Science</p>
             </div>
-            <div className="p-5 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-100 hover:border-primary-100 transition-all hover:shadow-md hover:-translate-y-1">
+            <div className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-primary-200 dark:hover:border-primary-500/30 transition-all hover:shadow-md hover:-translate-y-1">
               <div className="flex items-center gap-3 mb-2">
                 <Target className="w-5 h-5 text-emerald-500" />
                 <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Current CGPA</p>
               </div>
               <p className="font-black text-emerald-600 text-xl">8.9<span className="text-sm font-semibold text-emerald-600/50 ml-1">/ 10</span></p>
             </div>
-            <div className="p-5 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-100 hover:border-primary-100 transition-all hover:shadow-md hover:-translate-y-1">
+            <div className="p-5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-primary-200 dark:hover:border-primary-500/30 transition-all hover:shadow-md hover:-translate-y-1">
               <div className="flex items-center gap-3 mb-2">
                 <Globe className="w-5 h-5 text-rose-500" />
                 <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Languages</p>
               </div>
-              <p className="font-bold text-gray-900 text-sm">English, Hindi</p>
+              <p className="font-bold text-slate-900 dark:text-white text-sm">English, Hindi</p>
             </div>
           </div>
         </div>
 
         {/* Skills */}
-        <div className="rounded-[32px] bg-white p-6 sm:p-8 shadow-sm border border-gray-100">
+        <div className="rounded-[32px] bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm border border-slate-100 dark:border-slate-800 transition-colors">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2"><Star className="w-6 h-6 text-primary-500"/> Tech Stack</h3>
-            <button className="text-primary-600 text-sm font-bold hover:text-primary-700 bg-primary-50 hover:bg-primary-100 px-4 py-2 rounded-xl transition-colors">+ Add Skill</button>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2"><Star className="w-6 h-6 text-primary-500"/> Tech Stack</h3>
+            <button className="text-primary-600 dark:text-primary-400 text-sm font-bold hover:text-primary-700 dark:hover:text-primary-300 bg-primary-50 dark:bg-primary-500/10 px-4 py-2 rounded-xl transition-colors">+ Add Skill</button>
           </div>
           
           <div className="space-y-6">
@@ -240,33 +240,33 @@ const ProfileTab = () => {
 
       <div className="space-y-6">
         {/* Contact Info */}
-        <div className="rounded-[32px] bg-white p-6 sm:p-8 shadow-sm border border-gray-100">
-          <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"><Phone className="w-6 h-6 text-primary-500"/> Contact Info</h3>
+        <div className="rounded-[32px] bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm border border-slate-100 dark:border-slate-800 transition-colors">
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2"><Phone className="w-6 h-6 text-primary-500"/> Contact Info</h3>
           <ul className="space-y-3">
             <li>
-              <a href="mailto:alex.j@example.com" className="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 transition border border-transparent hover:border-slate-100 group">
-                <div className="w-12 h-12 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><Mail className="w-5 h-5"/></div>
+              <a href="mailto:alex.j@example.com" className="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border border-transparent hover:border-slate-100 dark:hover:border-slate-800 group">
+                <div className="w-12 h-12 rounded-full bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><Mail className="w-5 h-5"/></div>
                 <div className="overflow-hidden">
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Email</p>
-                  <p className="text-[15px] font-bold text-gray-900 truncate">alex.j@example.com</p>
+                  <p className="text-[15px] font-bold text-slate-900 dark:text-white truncate">alex.j@example.com</p>
                 </div>
               </a>
             </li>
             <li>
-              <a href="tel:+919876543210" className="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 transition border border-transparent hover:border-slate-100 group">
-                <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><Phone className="w-5 h-5"/></div>
+              <a href="tel:+919876543210" className="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border border-transparent hover:border-slate-100 dark:hover:border-slate-800 group">
+                <div className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><Phone className="w-5 h-5"/></div>
                 <div>
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Phone</p>
-                  <p className="text-[15px] font-bold text-gray-900">+91 98765 43210</p>
+                  <p className="text-[15px] font-bold text-slate-900 dark:text-white">+91 98765 43210</p>
                 </div>
               </a>
             </li>
             <li>
-              <div className="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 transition border border-transparent hover:border-slate-100 group cursor-default">
-                <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><MapPin className="w-5 h-5"/></div>
+              <div className="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border border-transparent hover:border-slate-100 dark:hover:border-slate-800 group cursor-default">
+                <div className="w-12 h-12 rounded-full bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"><MapPin className="w-5 h-5"/></div>
                 <div>
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Location</p>
-                  <p className="text-[15px] font-bold text-gray-900">Bangalore, India</p>
+                  <p className="text-[15px] font-bold text-slate-900 dark:text-white">Bangalore, India</p>
                 </div>
               </div>
             </li>
@@ -302,17 +302,17 @@ const ProfileTab = () => {
         </div>
         
         {/* Completion Widget */}
-        <div className="rounded-[32px] bg-gradient-to-br from-primary-50 to-indigo-50 p-6 sm:p-8 border border-primary-100 text-center relative overflow-hidden">
+        <div className="rounded-[32px] bg-gradient-to-br from-primary-50 dark:from-slate-800 to-indigo-50 dark:to-slate-900 p-6 sm:p-8 border border-primary-100 dark:border-slate-700 text-center relative overflow-hidden">
           <Sparkles className="absolute -top-4 -right-4 w-24 h-24 text-primary-500/10" />
-          <div className="inline-flex w-20 h-20 rounded-full bg-white shadow-md shadow-primary-500/10 border border-primary-100 items-center justify-center text-primary-600 font-black text-2xl mb-4 relative z-10">
+          <div className="inline-flex w-20 h-20 rounded-full bg-white dark:bg-slate-800 shadow-md shadow-primary-500/10 border border-primary-100 dark:border-slate-700 items-center justify-center text-primary-600 dark:text-primary-400 font-black text-2xl mb-4 relative z-10">
             85%
           </div>
-          <h4 className="font-bold text-gray-900 mb-2 text-lg relative z-10">Profile Strength</h4>
-          <p className="text-[13px] text-gray-600 font-medium mb-6 relative z-10 leading-relaxed">Complete your profile to get personalized course and job recommendations.</p>
-          <div className="w-full bg-white rounded-full h-2.5 mb-6 relative z-10 overflow-hidden shadow-inner">
+          <h4 className="font-bold text-slate-900 dark:text-white mb-2 text-lg relative z-10">Profile Strength</h4>
+          <p className="text-[13px] text-slate-600 dark:text-slate-400 font-medium mb-6 relative z-10 leading-relaxed">Complete your profile to get personalized course and job recommendations.</p>
+          <div className="w-full bg-white dark:bg-slate-900 rounded-full h-2.5 mb-6 relative z-10 overflow-hidden shadow-inner">
             <div className="bg-gradient-to-r from-primary-500 to-indigo-500 h-full rounded-full" style={{ width: '85%' }}></div>
           </div>
-          <button className="w-full py-3 bg-white text-primary-600 text-[15px] font-bold rounded-xl shadow-sm border border-primary-100 hover:bg-primary-50 hover:shadow-md transition-all relative z-10">Complete Profile</button>
+          <button className="w-full py-3 bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 text-[15px] font-bold rounded-xl shadow-sm border border-primary-100 dark:border-slate-700 hover:bg-primary-50 dark:hover:bg-slate-700 hover:shadow-md transition-all relative z-10">Complete Profile</button>
         </div>
       </div>
     </div>
@@ -547,7 +547,7 @@ const CareerTab = () => (
 )
 
 const AITutorTab = () => (
-  <div className="rounded-3xl bg-white shadow-sm border border-gray-200 overflow-hidden h-[600px] flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500">
+  <div className="rounded-[2rem] bg-white dark:bg-slate-900 shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden h-[calc(100vh-16rem)] min-h-[450px] max-h-[650px] flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500 transition-colors">
     <div className="bg-slate-900 p-5 text-white flex items-center gap-4">
       <div className="w-12 h-12 bg-white/10 border border-white/20 rounded-full flex items-center justify-center shadow-inner"><Bot className="w-6 h-6 text-primary-300"/></div>
       <div>
@@ -792,7 +792,7 @@ export default function DashboardContent() {
   }
 
   return (
-    <div className="pt-20 pb-10 bg-gray-50 min-h-screen">
+    <div className="pt-20 pb-10 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 min-h-screen">
       <div className="container-custom">
         <div className="flex flex-col lg:flex-row gap-8">
           <motion.aside
@@ -800,14 +800,14 @@ export default function DashboardContent() {
             animate={{ opacity: 1, x: 0 }}
             className="lg:w-[300px] shrink-0"
           >
-            <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-5 lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] overflow-y-auto scrollbar-hide">
-              <div className="text-center mb-6 pb-6 border-b border-gray-100">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm p-4 sm:p-5 lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] overflow-y-auto scrollbar-hide transition-colors">
+              <div className="text-center mb-6 pb-6 border-b border-slate-100 dark:border-slate-800">
                 <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary-500 to-secondary rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-sm">
                   <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150&auto=format&fit=crop" alt="Profile" className="w-full h-full object-cover" />
                 </div>
-                <h3 className="font-bold text-xl">Alex Johnson</h3>
-                <p className="text-gray-500 text-sm font-medium mt-1">Student • Pro Plan</p>
-                <div className="mt-3 inline-flex items-center gap-1.5 bg-green-50 border border-green-200 text-green-700 px-3 py-1 rounded-full text-xs font-bold">
+                <h3 className="font-bold text-xl text-slate-900 dark:text-white">Alex Johnson</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-sm font-medium mt-1">Student • Pro Plan</p>
+                <div className="mt-3 inline-flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold">
                   <Flame className="w-4 h-4" />
                   <span>30 Day Streak!</span>
                 </div>
@@ -816,7 +816,7 @@ export default function DashboardContent() {
               {/* Mobile Tab Menu Toggle */}
               <button
                 onClick={() => setIsMobileTabMenuOpen(!isMobileTabMenuOpen)}
-                className="lg:hidden w-full flex items-center justify-between px-4 py-3 bg-slate-50 border border-slate-100 text-slate-700 rounded-xl font-bold hover:bg-slate-100 transition-colors"
+                className="lg:hidden w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl font-bold hover:bg-slate-100 dark:hover:bg-slate-700/80 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <ActiveIcon className="w-5 h-5 text-primary-500" />
@@ -856,13 +856,13 @@ export default function DashboardContent() {
             animate={{ opacity: 1, y: 0 }}
             className="flex-1"
           >
-            <div className="rounded-3xl bg-white p-6 shadow-sm mb-8 border border-gray-100">
+            <div className="rounded-3xl bg-white dark:bg-slate-900 p-6 shadow-sm mb-8 border border-slate-100 dark:border-slate-800 transition-colors">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary-500 mb-1">{activeTab.replace('-', ' ')}</p>
-                  <h1 className="text-3xl font-black text-gray-900 capitalize">{activeTab === 'dashboard' ? 'Learning Snapshot' : activeTab.replace('-', ' ')}</h1>
+                  <h1 className="text-3xl font-black text-slate-900 dark:text-white capitalize">{activeTab === 'dashboard' ? 'Learning Snapshot' : activeTab.replace('-', ' ')}</h1>
                 </div>
-                <div className="rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-bold text-gray-500">
+                <div className="rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-2 text-xs font-bold text-slate-500 dark:text-slate-400">
                   Last updated 2 minutes ago
                 </div>
               </div>

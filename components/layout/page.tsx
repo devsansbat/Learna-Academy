@@ -30,7 +30,7 @@ export default function StoryPage() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.9 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="mb-4 w-[320px] rounded-2xl bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] border border-slate-100 overflow-hidden"
+              className="mb-4 w-[calc(100vw-3rem)] sm:w-[320px] max-w-[320px] rounded-2xl bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] border border-slate-100 overflow-hidden"
             >
               <div className="bg-gradient-to-r from-primary-500 to-indigo-600 p-4 text-white flex justify-between items-center">
                 <div className="text-left">

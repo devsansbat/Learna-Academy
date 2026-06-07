@@ -27,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
+      <body className={`${inter.variable} ${poppins.variable} font-sans bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-colors duration-300`}>
         <Providers>
           <Navbar />
           <main className="min-h-screen">

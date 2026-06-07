@@ -34,7 +34,7 @@ export default function StudentDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard')
 
   return (
-    <div className="pt-20 pb-10 bg-gray-50 min-h-screen">
+     <div className="pt-20 pb-10 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 min-h-screen">
       <div className="container-custom">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
@@ -43,15 +43,15 @@ export default function StudentDashboard() {
             animate={{ opacity: 1, x: 0 }}
             className="lg:w-80"
           >
-            <div className="bg-white rounded-xl shadow-sm p-6 sticky top-24">
+            <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-6 sticky top-24 transition-colors border border-slate-100 dark:border-slate-800">
               {/* User Info */}
-              <div className="text-center mb-6 pb-6 border-b">
+              <div className="text-center mb-6 pb-6 border-b border-slate-100 dark:border-slate-800">
                 <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary-500 to-secondary rounded-full flex items-center justify-center mb-4">
                   <span className="text-white text-3xl font-bold">A</span>
                 </div>
-                <h3 className="font-bold text-xl">Alex Johnson</h3>
-                <p className="text-gray-600 text-sm">Student • Pro Plan</p>
-                <div className="mt-2 inline-flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                <h3 className="font-bold text-xl text-slate-900 dark:text-white">Alex Johnson</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm">Student • Pro Plan</p>
+                <div className="mt-2 inline-flex items-center gap-1 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-sm">
                   <Flame className="w-4 h-4" />
                   <span>30 Day Streak!</span>
                 </div>
@@ -65,8 +65,8 @@ export default function StudentDashboard() {
                     onClick={() => setActiveTab(item.label.toLowerCase())}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                       activeTab === item.label.toLowerCase()
-                        ? 'bg-primary-50 text-primary-600 font-semibold'
-                        : 'text-gray-700 hover:bg-gray-50'
+                        ? 'bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 font-semibold'
+                        : 'text-slate-700 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                     }`}
                   >
                     <item.icon className="w-5 h-5" />

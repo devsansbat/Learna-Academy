@@ -300,34 +300,74 @@ export const Navbar = () => {
             </Link>
 
             {/* Search Bar */}
-            <div className="hidden lg:flex items-center flex-1 max-w-sm mx-4">
-              <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <div className="hidden lg:flex items-center flex-1 max-w-lg mx-4 lg:mx-8">
+              <div className="relative w-full group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Search className="text-slate-400 dark:text-slate-500 w-4 h-4 group-focus-within:text-primary-500 transition-colors" />
+                </div>
                 <input
                   type="text"
-                  placeholder="Search courses, educators, topics..."
+                  placeholder="Search for courses, skills, or mentors..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-3 py-1.5 rounded-full border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-all outline-none text-sm"
+                  className="w-full pl-11 pr-10 py-2.5 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-100/70 dark:bg-slate-800/70 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:border-primary-500 focus:ring-[3px] focus:ring-primary-500/20 transition-all duration-300 outline-none text-sm font-medium shadow-sm hover:bg-white dark:hover:bg-slate-800"
                 />
-                {searchQuery.trim() && (
-                  <div className="absolute left-0 right-0 mt-2 rounded-2xl border border-gray-200 bg-white shadow-lg z-20 text-left text-sm">
-                    {filteredSuggestions.length > 0 ? (
-                      filteredSuggestions.slice(0, 5).map((item) => (
-                        <button
-                          key={item}
-                          type="button"
-                          onClick={() => setSearchQuery(item)}
-                          className="w-full px-4 py-2 text-left hover:bg-primary-50"
-                        >
-                          {item}
-                        </button>
-                      ))
-                    ) : (
-                      <div className="px-4 py-2 text-gray-500">No suggestions found.</div>
+                
+                <div className="absolute inset-y-0 right-0 pr-2 flex items-center">
+                  <AnimatePresence>
+                    {searchQuery && (
+                      <motion.button 
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        onClick={() => setSearchQuery('')} 
+                        className="p-1.5 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </motion.button>
                     )}
-                  </div>
-                )}
+                  </AnimatePresence>
+                </div>
+
+                <AnimatePresence>
+                  {searchQuery.trim() && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="absolute left-0 right-0 mt-3 overflow-hidden rounded-[1.25rem] border border-slate-200/80 dark:border-slate-700/80 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl z-50 text-left text-sm"
+                    >
+                      {filteredSuggestions.length > 0 ? (
+                        <div className="p-2">
+                          <div className="px-3 pt-2 pb-1.5 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Top Results</div>
+                          {filteredSuggestions.slice(0, 5).map((item) => (
+                            <button key={item} type="button" onClick={() => setSearchQuery(item)} className="w-full flex items-center gap-3 px-3 py-2.5 text-left rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-200 group/item">
+                              <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover/item:bg-primary-50 dark:group-hover/item:bg-primary-500/20 transition-colors">
+                                <Search className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 group-hover/item:text-primary-500 transition-colors" />
+                              </div>
+                              <span className="font-medium text-slate-700 dark:text-slate-300 group-hover/item:text-primary-600 dark:group-hover/item:text-primary-400 transition-colors">{item}</span>
+                            </button>
+                          ))}
+                          <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                            <button className="w-full px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 text-[13px] font-bold text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-500/10 transition-colors group/btn">
+                              See all results for "{searchQuery}"
+                              <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="px-4 py-10 text-center flex flex-col items-center">
+                          <div className="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-3">
+                            <Search className="w-5 h-5 text-slate-400" />
+                          </div>
+                          <p className="font-semibold text-slate-900 dark:text-white">No results found</p>
+                          <p className="text-xs text-slate-500 mt-1">Try checking for typos or using different keywords</p>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
 
@@ -665,36 +705,65 @@ export const Navbar = () => {
             
             <div className="flex-1 overflow-y-auto p-4 space-y-6">
               {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-                <input
-                  type="text"
-                  placeholder="Search courses..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 dark:text-white"
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Search className="text-slate-400 dark:text-slate-500 w-4 h-4 group-focus-within:text-primary-500 transition-colors" />
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="Search for courses..." 
+                  value={searchQuery} 
+                  onChange={(e) => setSearchQuery(e.target.value)} 
+                  className="w-full pl-11 pr-12 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700/80 bg-slate-100/50 dark:bg-slate-800/50 text-sm focus:outline-none focus:bg-white dark:focus:bg-slate-900 focus:border-primary-500/50 focus:ring-4 focus:ring-primary-500/10 dark:text-white transition-all font-medium placeholder:text-slate-400 shadow-sm" 
                 />
-                {searchQuery.trim() && (
-                  <div className="absolute left-0 right-0 mt-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg z-20 text-left text-sm overflow-hidden">
-                    {filteredSuggestions.length > 0 ? (
-                      filteredSuggestions.slice(0, 5).map((item) => (
-                        <button
-                          key={item}
-                          type="button"
-                          onClick={() => {
-                            setSearchQuery(item)
-                            setIsMobileMenuOpen(false)
-                          }}
-                          className="w-full px-4 py-3 text-left hover:bg-primary-50 dark:hover:bg-primary-900/30 border-b border-slate-50 dark:border-slate-700/50 last:border-0 dark:text-white"
-                        >
-                          {item}
-                        </button>
-                      ))
-                    ) : (
-                      <div className="px-4 py-3 text-slate-500 dark:text-slate-400">No suggestions found.</div>
+                <div className="absolute inset-y-0 right-0 pr-2 flex items-center">
+                  <AnimatePresence>
+                    {searchQuery && (
+                      <motion.button 
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        onClick={() => setSearchQuery('')} 
+                        className="p-1.5 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                      >
+                        <X className="w-4 h-4" />
+                      </motion.button>
                     )}
-                  </div>
-                )}
+                  </AnimatePresence>
+                </div>
+                
+                <AnimatePresence>
+                  {searchQuery.trim() && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: -10, height: 0 }}
+                      animate={{ opacity: 1, y: 0, height: 'auto' }}
+                      exit={{ opacity: 0, y: -10, height: 0 }}
+                      className="overflow-hidden mt-3 rounded-[1.25rem] border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-xl z-20 text-left text-sm"
+                    >
+                      {filteredSuggestions.length > 0 ? (
+                        <div className="p-2">
+                          <div className="px-3 pt-2 pb-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Top Results</div>
+                          {filteredSuggestions.slice(0, 5).map((item) => (
+                            <button key={item} type="button" onClick={() => { setSearchQuery(item); setIsMobileMenuOpen(false); }} className="w-full flex items-center gap-3 px-3 py-3 text-left rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all group/mitem">
+                              <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover/mitem:bg-primary-50 dark:group-hover/mitem:bg-primary-500/20 transition-colors">
+                                <Search className="w-3.5 h-3.5 text-slate-400 group-hover/mitem:text-primary-500" />
+                              </div>
+                              <span className="font-medium text-slate-700 dark:text-slate-300 group-hover/mitem:text-primary-500">{item}</span>
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="px-4 py-8 text-center flex flex-col items-center text-slate-500 dark:text-slate-400">
+                          <div className="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-3">
+                            <Search className="w-5 h-5 text-slate-400" />
+                          </div>
+                          <p className="font-semibold text-slate-900 dark:text-white mb-1">No results found</p>
+                          <p className="text-xs">Try different keywords</p>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Profile Actions */}
@@ -820,7 +889,7 @@ export const Navbar = () => {
               exit={{ opacity: 0, y: 30, scale: 0.95 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               className={`mb-4 flex flex-col overflow-hidden rounded-[24px] bg-white dark:bg-slate-900 shadow-[0_10px_40px_rgba(0,0,0,0.16)] border border-slate-200/80 dark:border-slate-800 transition-all duration-300 origin-bottom-right ${
-                isExpanded ? 'w-[90vw] sm:w-[400px] h-[80vh] max-h-[600px]' : 'w-[320px] sm:w-[340px] h-[460px]'
+                isExpanded ? 'w-[calc(100vw-2rem)] sm:w-[400px] h-[80vh] max-h-[600px]' : 'w-[calc(100vw-2rem)] sm:w-[340px] h-[460px]'
               }`}
             >
               {/* Header */}
