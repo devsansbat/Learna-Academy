@@ -2,9 +2,9 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { Search, Menu, X, Sun, Moon, User, ShoppingCart, Bell, CheckCheck, Calendar, Award, Info, MessageSquare, Send, Sparkles, Trash2, Maximize2, Minimize2, Paperclip, Smile, Mail, Bot, ChevronRight, LayoutDashboard, Settings, LogOut, Flame } from 'lucide-react'
+import { Search, Menu, X, Sun, Moon, User, ShoppingCart, Bell, CheckCheck, Calendar, Award, Info, MessageSquare, Send, Sparkles, Trash2, Maximize2, Minimize2, Paperclip, Smile, Mail, Bot, ChevronRight, LayoutDashboard, Settings, LogOut, Flame, ChevronDown, Code, Server, Layout, Globe, Database, Cpu, BarChart, PenTool, Palette } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -15,6 +15,10 @@ export const Navbar = () => {
   const [cartCount, setCartCount] = useState(0)
   const [showNotifications, setShowNotifications] = useState(false)
   const [showProfileMenu, setShowProfileMenu] = useState(false)
+  const [expandedMobileMenu, setExpandedMobileMenu] = useState<string | null>(null)
+  const [expandedMobileSubmenu, setExpandedMobileSubmenu] = useState<string | null>(null)
+  const [isDesktopMenuHovered, setIsDesktopMenuHovered] = useState(false)
+  const [activeDesktopSubmenu, setActiveDesktopSubmenu] = useState<string | null>(null)
   const [mounted, setMounted] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [chatInput, setChatInput] = useState('')
@@ -243,7 +247,36 @@ export const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', href: '/' },
-    { name: 'Courses', href: '/courses' },
+    { 
+      name: 'All Courses', 
+      dropdown: [
+        {
+          title: 'Web Development',
+          subItems: [
+            { title: 'React JS Mastery', href: '/courses/react', icon: Code },
+            { title: 'Full Stack Node.js', href: '/courses/node', icon: Server },
+            { title: 'Frontend Bootcamp', href: '/courses/frontend', icon: Layout },
+            { title: 'Next.js Advanced', href: '/courses/nextjs', icon: Globe }
+          ]
+        },
+        {
+          title: 'Data Science',
+          subItems: [
+            { title: 'Python for Data', href: '/courses/python', icon: Database },
+            { title: 'Machine Learning A-Z', href: '/courses/ml', icon: Cpu },
+            { title: 'Deep Learning Basics', href: '/courses/dl', icon: BarChart }
+          ]
+        },
+        {
+          title: 'Design',
+          subItems: [
+            { title: 'UI/UX Masterclass', href: '/courses/ui-ux', icon: PenTool },
+            { title: 'Figma Advanced', href: '/courses/figma', icon: Layout },
+            { title: 'Graphic Design', href: '/courses/graphic-design', icon: Palette }
+          ]
+        }
+      ]
+    },
     { name: 'Live Classes', href: '/live-classes' },
     { name: 'Test Series', href: '/test-series' },
     { name: 'Doubt Solving', href: '/doubt-solving' },
@@ -301,15 +334,80 @@ export const Navbar = () => {
           {/* Right Area */}
           <div className="flex items-center gap-1.5 sm:gap-4">
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-3 text-sm">
+            <div className="hidden md:flex items-center space-x-1 lg:space-x-3 text-sm">
               {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="text-gray-700 hover:text-primary-500 transition-colors font-medium"
-                >
-                  {link.name}
-                </Link>
+                link.dropdown ? (
+                  <div 
+                    key={link.name} 
+                    className="relative px-1"
+                    onMouseEnter={() => setIsDesktopMenuHovered(true)}
+                    onMouseLeave={() => { setIsDesktopMenuHovered(false); setActiveDesktopSubmenu(null); }}
+                  >
+                    <button className={`flex items-center gap-1 hover:text-primary-500 transition-colors font-medium py-2 ${isDesktopMenuHovered ? 'text-primary-500' : 'text-gray-700'}`}>
+                      {link.name}
+                      <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isDesktopMenuHovered ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    <AnimatePresence>
+                      {isDesktopMenuHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute top-full left-0 pt-2 w-64 z-50"
+                        >
+                          <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-2">
+                            {link.dropdown.map((cat) => (
+                              <div 
+                                key={cat.title} 
+                                className="relative"
+                                onMouseEnter={() => setActiveDesktopSubmenu(cat.title)}
+                              >
+                                <button className={`w-full flex items-center justify-between px-4 py-3 text-sm hover:bg-slate-50 hover:text-primary-600 rounded-xl transition-colors text-left font-semibold ${activeDesktopSubmenu === cat.title ? 'bg-slate-50 text-primary-600' : 'text-slate-700'}`}>
+                                  {cat.title}
+                                  <ChevronRight className={`w-4 h-4 transition-colors ${activeDesktopSubmenu === cat.title ? 'text-primary-500' : 'text-slate-400'}`} />
+                                </button>
+                                
+                                <AnimatePresence>
+                                  {activeDesktopSubmenu === cat.title && (
+                                    <motion.div
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      exit={{ opacity: 0, x: -10 }}
+                                      transition={{ duration: 0.2 }}
+                                      className="absolute top-0 left-full pl-2 w-64 z-50"
+                                    >
+                                      <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-2">
+                                        {cat.subItems.map((sub) => {
+                                          const SubIcon = sub.icon;
+                                          return (
+                                            <Link key={sub.title} href={sub.href} className="group flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-primary-600 rounded-xl transition-colors">
+                                              <SubIcon className="w-4 h-4 text-slate-400 group-hover:text-primary-500 transition-colors" />
+                                              {sub.title}
+                                            </Link>
+                                          )
+                                        })}
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
+                              </div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link
+                    key={link.name}
+                    href={link.href || '#'}
+                    className="text-gray-700 hover:text-primary-500 transition-colors font-medium px-2 py-2"
+                  >
+                    {link.name}
+                  </Link>
+                )
               ))}
               <Link
                 href="/login"
@@ -495,11 +593,11 @@ export const Navbar = () => {
                           <LayoutDashboard className="w-4 h-4 text-slate-400 group-hover:text-primary-500 transition-colors" />
                           <span className="text-sm font-semibold">My Dashboard</span>
                         </Link>
-                        <Link href="/student/dashboard" onClick={() => setShowProfileMenu(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 transition-all text-slate-600 hover:text-primary-600 group">
+                        <Link href="/profile" onClick={() => setShowProfileMenu(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 transition-all text-slate-600 hover:text-primary-600 group">
                           <User className="w-4 h-4 text-slate-400 group-hover:text-primary-500 transition-colors" />
                           <span className="text-sm font-semibold">My Profile</span>
                         </Link>
-                        <Link href="/student/dashboard" onClick={() => setShowProfileMenu(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 transition-all text-slate-600 hover:text-primary-600 group">
+                        <Link href="/profile?tab=security" onClick={() => setShowProfileMenu(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 transition-all text-slate-600 hover:text-primary-600 group">
                           <Settings className="w-4 h-4 text-slate-400 group-hover:text-primary-500 transition-colors" />
                           <span className="text-sm font-semibold">Account Settings</span>
                         </Link>
@@ -617,14 +715,73 @@ export const Navbar = () => {
               <div className="flex flex-col space-y-1">
                 <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Navigation</p>
                 {navLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="px-4 py-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium text-[15px]"
-                  >
-                    {link.name}
-                  </Link>
+                  link.dropdown ? (
+                    <div key={link.name} className="flex flex-col space-y-1">
+                      <button
+                        onClick={() => setExpandedMobileMenu(expandedMobileMenu === link.name ? null : link.name)}
+                        className="flex items-center justify-between px-4 py-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-slate-800 transition-colors font-medium text-[15px]"
+                      >
+                        {link.name}
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${expandedMobileMenu === link.name ? 'rotate-180 text-primary-500' : ''}`} />
+                      </button>
+                      <AnimatePresence>
+                        {expandedMobileMenu === link.name && (
+                          <motion.div 
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="overflow-hidden flex flex-col space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-6 pl-2"
+                          >
+                            {link.dropdown.map(cat => (
+                              <div key={cat.title} className="flex flex-col space-y-1">
+                                <button
+                                  onClick={() => setExpandedMobileSubmenu(expandedMobileSubmenu === cat.title ? null : cat.title)}
+                                  className="flex items-center justify-between w-full px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                                >
+                                  {cat.title}
+                                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${expandedMobileSubmenu === cat.title ? 'rotate-180 text-primary-500' : ''}`} />
+                                </button>
+                                <AnimatePresence>
+                                  {expandedMobileSubmenu === cat.title && (
+                                    <motion.div
+                                      initial={{ height: 0, opacity: 0 }}
+                                      animate={{ height: 'auto', opacity: 1 }}
+                                      exit={{ height: 0, opacity: 0 }}
+                                      className="overflow-hidden flex flex-col pl-4"
+                                    >
+                                      {cat.subItems.map((sub) => {
+                                        const SubIcon = sub.icon;
+                                        return (
+                                          <Link 
+                                            key={sub.title} 
+                                            href={sub.href || '#'} 
+                                            onClick={() => setIsMobileMenuOpen(false)} 
+                                            className="group flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                                          >
+                                            <SubIcon className="w-4 h-4 shrink-0 text-slate-400 dark:text-slate-500 group-hover:text-primary-500 transition-colors" />
+                                            {sub.title}
+                                          </Link>
+                                        )
+                                      })}
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
+                              </div>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      key={link.name}
+                      href={link.href || '#'}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="px-4 py-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium text-[15px]"
+                    >
+                      {link.name}
+                    </Link>
+                  )
                 ))}
               </div>
 

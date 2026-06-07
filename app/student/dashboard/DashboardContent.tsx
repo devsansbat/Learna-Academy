@@ -8,7 +8,7 @@ import {
   LayoutDashboard, BookOpen, Video, FileText, Trophy, Settings,
   Flame, Sparkles, User, Activity, ClipboardList, Library, Briefcase, Users,
   Bot, GraduationCap, Star, Bookmark, Shield, CreditCard, BellRing, Target, TrendingUp,
-  ChevronRight, Edit3, Github, Linkedin, Twitter, Download, Share2, MapPin, Mail, Phone, Lock, HeartPulse, CheckCheck, X, Calendar, Camera, Globe
+      ChevronRight, Edit3, Github, Linkedin, Twitter, Download, Share2, MapPin, Mail, Phone, Lock, HeartPulse, CheckCheck, X, Calendar, Camera, Globe, Award
 } from 'lucide-react'
 import DashboardStats from '@/components/dashboard/dashboardstats'
 import MyCourses from '@/components/dashboard/MyCourses'
@@ -79,9 +79,10 @@ const ProfileTab = () => {
   }
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-    {/* Cover Photo & Main Profile Card */}
-    <div className="rounded-[32px] bg-white shadow-sm overflow-hidden border border-gray-100 relative">
+    <>
+      <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Cover Photo & Main Profile Card */}
+      <div className="rounded-[32px] bg-white shadow-sm overflow-hidden border border-gray-100 relative">
       <div className="h-32 sm:h-48 w-full bg-slate-900 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] relative overflow-hidden flex items-center justify-center">
          <div className="absolute inset-0 bg-gradient-to-r from-primary-600/90 via-indigo-600/90 to-purple-600/90"></div>
         {/* Abstract background shapes */}
@@ -315,7 +316,7 @@ const ProfileTab = () => {
         </div>
       </div>
     </div>
-  </div>
+      </div>
 
       {/* Image Upload Modal */}
       {showImageUploadModal && (
@@ -342,7 +343,7 @@ const ProfileTab = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   )
 }
 
