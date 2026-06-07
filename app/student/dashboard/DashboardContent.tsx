@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react/no-unescaped-entities */
 'use client'
 
-import { useState } from 'react'
+import { useState, ChangeEvent } from 'react'
 import { motion } from 'framer-motion'
 import {
-  LayoutDashboard, BookOpen, Video, FileText, Trophy, HelpCircle, Settings,
+  LayoutDashboard, BookOpen, Video, FileText, Trophy, Settings,
   Flame, Sparkles, User, Activity, ClipboardList, Library, Briefcase, Users,
   Bot, GraduationCap, Star, Bookmark, Shield, CreditCard, BellRing, Target, TrendingUp,
   ChevronRight, Edit3, Github, Linkedin, Twitter, Download, Share2, MapPin, Mail, Phone, Lock, HeartPulse, CheckCheck, X, Calendar, Camera, Globe
@@ -55,8 +57,29 @@ const quickActions = [
   { label: 'Join Live Class', color: 'bg-sky-500', icon: Video },
 ]
 
-const ProfileTab = () => (
-  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+const ProfileTab = () => {
+  const [showImageUploadModal, setShowImageUploadModal] = useState(false)
+  const [profileImageUrl, setProfileImageUrl] = useState(
+    'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=250&auto=format&fit=crop'
+  )
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      const reader = new FileReader()
+
+      reader.onload = (loadEvent) => {
+        if (loadEvent.target && typeof loadEvent.target.result === 'string') {
+          setProfileImageUrl(loadEvent.target.result)
+          setShowImageUploadModal(false)
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  return (
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
     {/* Cover Photo & Main Profile Card */}
     <div className="rounded-[32px] bg-white shadow-sm overflow-hidden border border-gray-100 relative">
       <div className="h-32 sm:h-48 w-full bg-slate-900 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] relative overflow-hidden flex items-center justify-center">
@@ -67,9 +90,12 @@ const ProfileTab = () => (
       </div>
       <div className="px-6 sm:px-10 pb-8 relative">
         <div className="flex flex-col sm:flex-row gap-6 sm:items-end -mt-12 sm:-mt-16 mb-4 sm:mb-0 relative z-10">
-          <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-[2rem] bg-white p-2 shadow-xl border border-gray-100 relative group cursor-pointer shrink-0">
+          <div 
+            className="w-28 h-28 sm:w-36 sm:h-36 rounded-[2rem] bg-white p-2 shadow-xl border border-gray-100 relative group cursor-pointer shrink-0"
+            onClick={() => setShowImageUploadModal(true)}
+          >
             <div className="w-full h-full rounded-[1.5rem] bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center text-white text-3xl sm:text-4xl font-black overflow-hidden transition-all duration-300 relative">
-              <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=250&auto=format&fit=crop" alt="Profile" className="w-full h-full object-cover group-hover:opacity-50 transition-opacity duration-300" />
+              <img src={profileImageUrl} alt="Profile" className="w-full h-full object-cover group-hover:opacity-50 transition-opacity duration-300" />
               <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
                 <Camera className="w-8 h-8 text-white mb-1" />
                 <span className="text-[10px] font-bold tracking-wider text-white uppercase">Change</span>
@@ -290,7 +316,35 @@ const ProfileTab = () => (
       </div>
     </div>
   </div>
-)
+
+      {/* Image Upload Modal */}
+      {showImageUploadModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl relative animate-in zoom-in-95 duration-200">
+            <button 
+              onClick={() => setShowImageUploadModal(false)}
+              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-full transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <h3 className="text-xl font-bold text-slate-900 mb-2">Update Profile Picture</h3>
+            <p className="text-sm text-slate-500 mb-6">Choose a new photo for your Learna Academy profile.</p>
+            
+            <div className="border-2 border-dashed border-slate-200 rounded-2xl p-8 text-center hover:bg-slate-50 transition-colors">
+              <Camera className="w-10 h-10 text-slate-400 mx-auto mb-4" />
+              <p className="text-sm font-medium text-slate-700 mb-1">Click to browse your files</p>
+              <p className="text-xs text-slate-500 mb-4">PNG, JPG or GIF (Max 2MB)</p>
+              <label className="cursor-pointer inline-flex items-center justify-center px-6 py-2.5 bg-primary-50 text-primary-600 text-sm font-bold rounded-xl hover:bg-primary-100 transition-colors">
+                Browse Files
+                <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
+              </label>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
 
 const AnalyticsTab = () => (
   <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -502,10 +556,10 @@ const AITutorTab = () => (
     </div>
     <div className="flex-1 bg-slate-50 p-6 flex flex-col gap-4 overflow-y-auto">
       <div className="self-start max-w-[85%] sm:max-w-[70%] bg-white p-4 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100">
-        <p className="text-sm text-gray-700 leading-relaxed">Hello Alex! 👋 I noticed you're learning React. Do you want to review the `useEffect` hook concepts today, or start the new module on State Management?</p>
+        <p className="text-sm text-gray-700 leading-relaxed">Hello Alex! 👋 I noticed you&apos;re learning React. Do you want to review the `useEffect` hook concepts today, or start the new module on State Management?</p>
       </div>
       <div className="self-end max-w-[85%] sm:max-w-[70%] bg-primary-600 text-white p-4 rounded-2xl rounded-tr-sm shadow-sm">
-        <p className="text-sm leading-relaxed">Let's review useEffect first. I'm a bit confused about the dependency array.</p>
+        <p className="text-sm leading-relaxed">Let&apos;s review useEffect first. I&apos;m a bit confused about the dependency array.</p>
       </div>
       <div className="self-start max-w-[85%] sm:max-w-[70%] bg-white p-4 rounded-2xl rounded-tl-sm shadow-sm border border-gray-100">
         <p className="text-sm text-gray-700 mb-3 leading-relaxed">Sure thing! The dependency array controls exactly when your effect runs. Here is a quick breakdown:</p>
@@ -673,7 +727,7 @@ export default function DashboardContent() {
                 <h3 className="mt-3 text-3xl font-semibold">18h</h3>
                 <p className="mt-3 text-sm text-gray-500">of 20h study goal completed</p>
                 <div className="mt-4 rounded-3xl border border-primary-100 bg-primary-50 px-4 py-3 text-sm text-primary-700">
-                  Only 2 hours left to hit this week’s target.
+                Only 2 hours left to hit this week&apos;s target.
                 </div>
               </div>
               <div className="rounded-3xl bg-white p-6 shadow-sm">

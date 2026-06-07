@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react/no-unescaped-entities */
 import Link from 'next/link'
 import { User, Mail, Phone, MapPin, Lock } from 'lucide-react'
 
@@ -6,12 +8,13 @@ export const metadata = {
   description: 'Manage your Learna Academy profile, subscriptions, and preferences.',
 }
 
-export default function ProfilePage({
+export default async function ProfilePage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined }
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }> | { [key: string]: string | string[] | undefined }
 }) {
-  const tab = searchParams?.tab || 'account'
+  const params = await searchParams;
+  const tab = params?.tab || 'account'
 
   return (
     <section className="min-h-screen bg-gray-50 py-24">
@@ -155,7 +158,7 @@ export default function ProfilePage({
                       <Mail className="w-6 h-6 text-primary-600" />
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900">Email Support</h3>
-                    <p className="text-sm text-gray-500 mt-1 mb-6 flex-1">Send us an email and we'll get back to you within 24 hours.</p>
+                    <p className="text-sm text-gray-500 mt-1 mb-6 flex-1">Send us an email and we&apos;ll get back to you within 24 hours.</p>
                     <a href="mailto:support@learna.com" className="text-sm font-bold text-primary-600 hover:text-primary-700 bg-white px-5 py-2.5 rounded-full border border-gray-200 shadow-sm w-full text-center">support@learna.com</a>
                   </div>
                   <div className="rounded-3xl border border-gray-100 bg-gray-50 p-6 md:p-8 flex flex-col items-start">

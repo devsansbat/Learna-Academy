@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react/no-unescaped-entities */
 'use client'
 
 import { useState } from 'react'
@@ -10,10 +12,6 @@ import {
   Trophy,
   HelpCircle,
   Settings,
-  Calendar,
-  Bell,
-  TrendingUp,
-  Award,
   Flame,
 } from 'lucide-react'
 import DashboardStats from '@/components/dashboard/dashboardstats'
@@ -88,7 +86,7 @@ export default function StudentDashboard() {
             {/* Welcome Banner */}
             <div className="bg-gradient-to-r from-primary-500 to-secondary rounded-xl p-6 text-white mb-8">
               <h2 className="text-2xl font-bold mb-2">Welcome back, Alex! 👋</h2>
-              <p className="opacity-90">Continue your learning journey. You're doing great!</p>
+              <p className="opacity-90">Continue your learning journey. You&apos;re doing great!</p>
             </div>
 
             {/* Stats Overview */}

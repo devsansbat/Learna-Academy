@@ -1,6 +1,6 @@
 ﻿'use client'
 
-﻿import Link from 'next/link'
+import Link from 'next/link'
 import { Facebook, Twitter, Youtube, Linkedin, Instagram, Mail, Phone, MapPin } from 'lucide-react'
 import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'

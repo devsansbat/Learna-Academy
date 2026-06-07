@@ -1,6 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react/no-unescaped-entities */
 'use client'
 
-import { useState, useEffect, useRef, Fragment } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Search, Menu, X, Sun, Moon, User, ShoppingCart, Bell, CheckCheck, Calendar, Award, Info, MessageSquare, Send, Sparkles, Trash2, Maximize2, Minimize2, Paperclip, Smile, Mail, Bot, ChevronRight, LayoutDashboard, Settings, LogOut, Flame } from 'lucide-react'
 import { useTheme } from 'next-themes'
@@ -249,7 +251,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      <nav aria-label="Main Navigation" className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           isScrolled ? 'glassmorphism shadow-lg' : 'bg-white/95 backdrop-blur-sm'
         }`}>
         <div className="container-custom">
@@ -296,6 +298,8 @@ export const Navbar = () => {
               </div>
             </div>
 
+          {/* Right Area */}
+          <div className="flex items-center gap-1.5 sm:gap-4">
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-3 text-sm">
               {navLinks.map((link) => (
@@ -309,7 +313,7 @@ export const Navbar = () => {
               ))}
               <Link
                 href="/login"
-                className="rounded-full bg-primary-500 px-3 py-1.5 text-white font-medium hover:bg-primary-600 transition text-sm"
+                className="rounded-full bg-primary-500 px-4 py-2 text-white font-medium hover:bg-primary-600 transition-colors text-sm shadow-sm"
               >
                 Login / Register
               </Link>
@@ -319,6 +323,10 @@ export const Navbar = () => {
               >
                 {mounted && theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
+            </div>
+
+            {/* Universal Actions (Mobile & Desktop) */}
+            <div className="flex items-center gap-1 sm:gap-2">
               <div className="relative" ref={notificationRef}>
                 <button
                   onClick={() => {
@@ -347,7 +355,7 @@ export const Navbar = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ duration: 0.15, ease: "easeOut" }}
-                      className="absolute -right-2 top-11 z-50 w-[280px] overflow-hidden rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_10px_40px_rgb(0,0,0,0.1)] backdrop-blur-xl sm:right-0 sm:w-[320px]"
+                      className="absolute -right-16 top-11 z-50 w-[300px] overflow-hidden rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_10px_40px_rgb(0,0,0,0.1)] backdrop-blur-xl sm:right-0 sm:w-[320px] max-w-[calc(100vw-2rem)]"
                     >
                       {/* Header */}
                       <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-3 py-2.5">
@@ -431,7 +439,7 @@ export const Navbar = () => {
               </Link>
               
               {/* Advanced Profile Dropdown */}
-              <div className="relative" ref={profileRef}>
+              <div className="hidden sm:block relative" ref={profileRef}>
                 <button
                   onClick={() => {
                     setShowProfileMenu((prev) => !prev)
@@ -451,7 +459,7 @@ export const Navbar = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ duration: 0.15, ease: "easeOut" }}
-                      className="absolute right-0 top-11 z-50 w-[300px] overflow-hidden rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_10px_40px_rgb(0,0,0,0.1)] backdrop-blur-xl"
+                  className="absolute right-0 top-11 z-50 w-[280px] sm:w-[300px] max-w-[calc(100vw-1rem)] overflow-hidden rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_10px_40px_rgb(0,0,0,0.1)] backdrop-blur-xl"
                     >
                       {/* Header */}
                       <div className="p-4 border-b border-slate-100 bg-gradient-to-br from-slate-50 to-white">
@@ -512,30 +520,64 @@ export const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-1.5 rounded-lg hover:bg-gray-100"
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden p-1.5 -mr-1 rounded-full hover:bg-slate-100 transition-colors text-slate-700"
             >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              <Menu className="w-6 h-6" />
             </button>
           </div>
         </div>
+      </div>
       </nav>
 
       {/* Mobile Menu */}
+    <AnimatePresence>
       {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-40 bg-white pt-16 md:hidden transition-transform duration-300">
-            <div className="p-3 space-y-3">
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[60] bg-slate-900/40 backdrop-blur-sm md:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <motion.nav
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-y-0 right-0 z-[70] w-[85%] max-w-[320px] bg-white dark:bg-slate-900 shadow-2xl flex flex-col md:hidden"
+            aria-label="Mobile Navigation"
+          >
+            <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white dark:border-slate-700 shadow-sm shrink-0">
+                  <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150&auto=format&fit=crop" alt="Profile" className="w-full h-full object-cover" />
+                </div>
+                <div className="flex flex-col overflow-hidden">
+                  <span className="text-sm font-bold text-slate-900 dark:text-white truncate">Alex Johnson</span>
+                  <span className="text-[10px] text-primary-600 dark:text-primary-400 font-bold uppercase tracking-wider">Pro Learner</span>
+                </div>
+              </div>
+              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 shrink-0 rounded-full bg-white dark:bg-slate-800 shadow-sm text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors" aria-label="Close menu">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-4 space-y-6">
+              {/* Search */}
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search courses..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-200 text-sm"
+                  className="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 dark:text-white"
                 />
                 {searchQuery.trim() && (
-                  <div className="absolute left-0 right-0 mt-2 rounded-2xl border border-gray-200 bg-white shadow-lg z-20 text-left text-sm">
+                  <div className="absolute left-0 right-0 mt-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg z-20 text-left text-sm overflow-hidden">
                     {filteredSuggestions.length > 0 ? (
                       filteredSuggestions.slice(0, 5).map((item) => (
                         <button
@@ -545,37 +587,71 @@ export const Navbar = () => {
                             setSearchQuery(item)
                             setIsMobileMenuOpen(false)
                           }}
-                          className="w-full px-4 py-2 text-left hover:bg-primary-50"
+                          className="w-full px-4 py-3 text-left hover:bg-primary-50 dark:hover:bg-primary-900/30 border-b border-slate-50 dark:border-slate-700/50 last:border-0 dark:text-white"
                         >
                           {item}
                         </button>
                       ))
                     ) : (
-                      <div className="px-4 py-2 text-gray-500">No suggestions found.</div>
+                      <div className="px-4 py-3 text-slate-500 dark:text-slate-400">No suggestions found.</div>
                     )}
                   </div>
                 )}
               </div>
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block py-2 text-gray-700 hover:text-primary-500 text-sm"
-                >
-                  {link.name}
+
+              {/* Profile Actions */}
+              <div className="flex flex-col space-y-1">
+                <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Account</p>
+                <Link href="/student/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium text-[15px]">
+                  <LayoutDashboard className="w-4 h-4" /> My Dashboard
                 </Link>
-              ))}
-              <Link
-                href="/login"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block rounded-full bg-primary-500 px-4 py-2 text-white font-medium hover:bg-primary-600 transition text-sm"
-              >
-                Login / Register
-              </Link>
+                <Link href="/profile" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium text-[15px]">
+                  <User className="w-4 h-4" /> My Profile
+                </Link>
+                <Link href="/profile?tab=security" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium text-[15px]">
+                  <Settings className="w-4 h-4" /> Settings
+                </Link>
+              </div>
+
+              {/* Nav Links */}
+              <div className="flex flex-col space-y-1">
+                <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Navigation</p>
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="px-4 py-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium text-[15px]"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Bottom Actions */}
+              <div className="pt-6 border-t border-slate-100 dark:border-slate-800 space-y-5">
+                <div className="flex items-center justify-between px-4">
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Appearance</span>
+                  <button
+                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    className="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2"
+                  >
+                    {mounted && theme === 'dark' ? <><Sun className="w-4 h-4" /><span className="text-xs font-bold sm:hidden">Light</span></> : <><Moon className="w-4 h-4" /><span className="text-xs font-bold sm:hidden">Dark</span></>}
+                  </button>
+                </div>
+                <Link
+                  href="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-rose-50 dark:bg-rose-500/10 px-4 py-3.5 text-[15px] font-bold text-rose-600 dark:text-rose-400 transition hover:bg-rose-100 dark:hover:bg-rose-500/20 shadow-sm"
+                >
+                  <LogOut className="w-4 h-4" /> Sign Out
+                </Link>
+              </div>
             </div>
-          </div>
-        )}
+          </motion.nav>
+        </>
+      )}
+    </AnimatePresence>
 
       {/* --- Advanced & Workable Floating Chat Bot System --- */}
       <div className="fixed bottom-6 right-4 sm:right-6 z-[100] flex flex-col items-end">
@@ -646,7 +722,7 @@ export const Navbar = () => {
                         <div className="w-12 h-12 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm"><Bot className="w-6 h-6 text-slate-900 dark:text-white" /></div>
                         <h4 className="font-semibold text-slate-800 dark:text-white text-base mb-1.5">Welcome to Learna! 👋</h4>
                         <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed px-2">
-                          Let's get started. Please fill in your details below so we can assist you better.
+                        Let&apos;s get started. Please fill in your details below so we can assist you better.
                         </p>
                       </div>
                       
