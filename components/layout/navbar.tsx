@@ -880,7 +880,7 @@ export const Navbar = () => {
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               className={`mb-5 flex flex-col overflow-hidden rounded-[2rem] bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] dark:shadow-primary-500/10 border border-slate-200/60 dark:border-slate-700/60 transition-all duration-300 origin-bottom-right ${
-                isExpanded ? 'w-[calc(100vw-2rem)] sm:w-[420px] h-[80vh] max-h-[700px]' : 'w-[calc(100vw-2rem)] sm:w-[360px] h-[520px]'
+                isExpanded ? 'w-[calc(100vw-2rem)] sm:w-[400px] h-[80vh] max-h-[600px]' : 'w-[calc(100vw-2rem)] sm:w-[340px] h-[480px]'
               }`}
             >
               {/* Header */}
@@ -933,7 +933,7 @@ export const Navbar = () => {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
-                      className="flex-1 p-6 flex flex-col justify-center overflow-y-auto"
+                      className="flex-1 p-6 flex flex-col justify-center overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                     >
                       <div className="bg-primary-50 dark:bg-primary-500/10 p-6 rounded-[1.5rem] border border-primary-100 dark:border-primary-500/20 mb-6 text-center">
                         <div className="w-14 h-14 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
@@ -1084,22 +1084,22 @@ export const Navbar = () => {
           whileHover={{ scale: 1.05, y: -2 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsChatOpen(!isChatOpen)}
-          className="w-14 h-14 sm:w-16 sm:h-16 bg-slate-900 dark:bg-primary-500 rounded-full flex items-center justify-center text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] dark:shadow-primary-500/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all relative z-50 group border border-slate-700 dark:border-primary-400"
+          className="w-12 h-12 sm:w-14 sm:h-14 bg-slate-900 dark:bg-primary-500 rounded-full flex items-center justify-center text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] dark:shadow-primary-500/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all relative z-50 group border border-slate-700 dark:border-primary-400"
         >
           {!isChatOpen && !hasStartedChat && (
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center">
+            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-4 w-4 sm:h-5 sm:w-5 bg-rose-500 text-white text-[9px] sm:text-[10px] font-bold items-center justify-center border-2 border-white dark:border-slate-900">1</span>
+              <span className="relative inline-flex rounded-full h-4 w-4 bg-rose-500 text-white text-[9px] font-bold items-center justify-center border-2 border-white dark:border-slate-900">1</span>
             </span>
           )}
           <AnimatePresence mode="wait">
             {isChatOpen ? (
               <motion.div key="close" initial={{ opacity: 0, rotate: -90, scale: 0.5 }} animate={{ opacity: 1, rotate: 0, scale: 1 }} exit={{ opacity: 0, rotate: 90, scale: 0.5 }} transition={{ duration: 0.2 }}>
-                <X className="w-6 h-6 sm:w-7 sm:h-7" />
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </motion.div>
             ) : (
               <motion.div key="chat" className="relative flex items-center justify-center" initial={{ opacity: 0, rotate: 90, scale: 0.5 }} animate={{ opacity: 1, rotate: 0, scale: 1 }} exit={{ opacity: 0, rotate: -90, scale: 0.5 }} transition={{ duration: 0.2 }}>
-                <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 group-hover:scale-110" />
+                <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 group-hover:scale-110" />
               </motion.div>
             )}
           </AnimatePresence>
