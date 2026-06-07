@@ -8,7 +8,7 @@ import {
   LayoutDashboard, BookOpen, Video, FileText, Trophy, Settings,
   Flame, Sparkles, User, Activity, ClipboardList, Library, Briefcase, Users,
   Bot, GraduationCap, Star, Bookmark, Shield, CreditCard, BellRing, Target, TrendingUp,
-      ChevronRight, Edit3, Github, Linkedin, Twitter, Download, Share2, MapPin, Mail, Phone, Lock, HeartPulse, CheckCheck, X, Calendar, Camera, Globe, Award
+  ChevronRight, Edit3, Github, Linkedin, Twitter, Download, Share2, MapPin, Mail, Phone, Lock, HeartPulse, CheckCheck, X, Calendar, Camera, Globe, Award, ChevronDown
 } from 'lucide-react'
 import DashboardStats from '@/components/dashboard/dashboardstats'
 import MyCourses from '@/components/dashboard/MyCourses'
@@ -668,6 +668,17 @@ const SettingsTab = () => (
 
 export default function DashboardContent() {
   const [activeTab, setActiveTab] = useState('dashboard')
+  const [isMobileTabMenuOpen, setIsMobileTabMenuOpen] = useState(false)
+
+  const getActiveTabDetails = () => {
+    for (const group of sidebarGroups) {
+      const item = group.items.find((i) => i.id === activeTab)
+      if (item) return item
+    }
+    return { icon: LayoutDashboard, label: 'Dashboard' }
+  }
+  const activeTabInfo = getActiveTabDetails()
+  const ActiveIcon = activeTabInfo.icon
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -789,7 +800,7 @@ export default function DashboardContent() {
             animate={{ opacity: 1, x: 0 }}
             className="lg:w-[300px] shrink-0"
           >
-            <div className="bg-white rounded-2xl shadow-sm p-5 sticky top-24 max-h-[calc(100vh-120px)] overflow-y-auto scrollbar-hide">
+            <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-5 lg:sticky lg:top-24 lg:max-h-[calc(100vh-120px)] overflow-y-auto scrollbar-hide">
               <div className="text-center mb-6 pb-6 border-b border-gray-100">
                 <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary-500 to-secondary rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-sm">
                   <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150&auto=format&fit=crop" alt="Profile" className="w-full h-full object-cover" />
@@ -802,7 +813,19 @@ export default function DashboardContent() {
                 </div>
               </div>
 
-              <nav className="space-y-6">
+              {/* Mobile Tab Menu Toggle */}
+              <button
+                onClick={() => setIsMobileTabMenuOpen(!isMobileTabMenuOpen)}
+                className="lg:hidden w-full flex items-center justify-between px-4 py-3 bg-slate-50 border border-slate-100 text-slate-700 rounded-xl font-bold hover:bg-slate-100 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <ActiveIcon className="w-5 h-5 text-primary-500" />
+                  <span className="capitalize">{activeTabInfo.label}</span>
+                </div>
+                <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${isMobileTabMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              <nav className={`space-y-6 pt-4 lg:pt-0 ${isMobileTabMenuOpen ? 'block' : 'hidden'} lg:block`}>
                 {sidebarGroups.map((group) => (
                   <div key={group.title}>
                     <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">{group.title}</p>

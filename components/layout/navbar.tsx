@@ -59,7 +59,7 @@ export const Navbar = () => {
     },
   ])
   const unreadCount = notifications.filter((item) => item.unread).length
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, resolvedTheme } = useTheme()
 
   const notificationRef = useRef<HTMLDivElement>(null)
   const profileRef = useRef<HTMLDivElement>(null)
@@ -416,10 +416,10 @@ export const Navbar = () => {
                 Login / Register
               </Link>
               <button
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
                 className="p-2 rounded-full hover:bg-slate-100 transition-colors"
               >
-                {mounted && theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {mounted && resolvedTheme === 'dark' ? <Sun className="w-4 h-4 text-slate-300" /> : <Moon className="w-4 h-4 text-slate-700" />}
               </button>
             </div>
 
@@ -790,10 +790,10 @@ export const Navbar = () => {
                 <div className="flex items-center justify-between px-4">
                   <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Appearance</span>
                   <button
-                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
                     className="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2"
                   >
-                    {mounted && theme === 'dark' ? <><Sun className="w-4 h-4" /><span className="text-xs font-bold sm:hidden">Light</span></> : <><Moon className="w-4 h-4" /><span className="text-xs font-bold sm:hidden">Dark</span></>}
+                    {mounted && resolvedTheme === 'dark' ? <><Sun className="w-4 h-4" /><span className="text-xs font-bold sm:hidden">Light</span></> : <><Moon className="w-4 h-4" /><span className="text-xs font-bold sm:hidden">Dark</span></>}
                   </button>
                 </div>
                 <Link
