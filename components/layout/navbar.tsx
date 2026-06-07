@@ -29,7 +29,6 @@ export const Navbar = () => {
   const [userEmail, setUserEmail] = useState('')
   const [hasStartedChat, setHasStartedChat] = useState(false)
   const [messages, setMessages] = useState<{id: number, text: string, sender: 'user'|'bot', time: string}>([])
-  const chatScrollRef = useRef<HTMLDivElement>(null)
   const quickTopics = ['Course Info', 'Pricing', 'Support']
   
   const [notifications, setNotifications] = useState([
@@ -149,13 +148,6 @@ export const Navbar = () => {
       window.removeEventListener('learna-cart-update', updateCartCount)
     }
   }, [])
-
-  // Auto scroll chat to bottom
-  useEffect(() => {
-    if (chatScrollRef.current) {
-      chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight
-    }
-  }, [messages, isTyping, isChatOpen])
 
   const handleSendMessage = (text: string) => {
     if (!text.trim()) return
@@ -879,37 +871,36 @@ export const Navbar = () => {
       )}
     </AnimatePresence>
 
-      {/* --- Advanced & Workable Floating Chat Bot System --- */}
       <div className="fixed bottom-6 right-4 sm:right-6 z-[100] flex flex-col items-end">
         <AnimatePresence>
           {isChatOpen && (
             <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.95, transformOrigin: 'bottom right' }}
+              initial={{ opacity: 0, y: 20, scale: 0.95, transformOrigin: 'bottom right' }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 30, scale: 0.95 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className={`mb-4 flex flex-col overflow-hidden rounded-[24px] bg-white dark:bg-slate-900 shadow-[0_10px_40px_rgba(0,0,0,0.16)] border border-slate-200/80 dark:border-slate-800 transition-all duration-300 origin-bottom-right ${
-                isExpanded ? 'w-[calc(100vw-2rem)] sm:w-[400px] h-[80vh] max-h-[600px]' : 'w-[calc(100vw-2rem)] sm:w-[340px] h-[460px]'
+              exit={{ opacity: 0, y: 20, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className={`mb-5 flex flex-col overflow-hidden rounded-[2rem] bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] dark:shadow-primary-500/10 border border-slate-200/60 dark:border-slate-700/60 transition-all duration-300 origin-bottom-right ${
+                isExpanded ? 'w-[calc(100vw-2rem)] sm:w-[420px] h-[80vh] max-h-[700px]' : 'w-[calc(100vw-2rem)] sm:w-[360px] h-[520px]'
               }`}
             >
               {/* Header */}
-              <div className="bg-slate-900 dark:bg-slate-950 p-3.5 sm:p-4 text-white flex justify-between items-center shrink-0">
+              <div className="p-4 sm:p-5 flex justify-between items-center shrink-0 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 flex items-center justify-center border border-white/10">
-                      <Bot className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" />
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center text-white shadow-md">
+                      <Sparkles className="w-5 h-5" />
                     </div>
-                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-slate-900 rounded-full"></span>
+                    <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full"></span>
                   </div>
                   <div className="text-left">
-                    <h3 className="font-semibold text-[14px] sm:text-[15px] leading-tight text-white tracking-wide">Learna Support</h3>
-                    <p className="text-[10px] text-slate-300 font-medium mt-0.5">Typically replies instantly</p>
+                    <h3 className="font-bold text-[15px] leading-tight text-slate-900 dark:text-white">Learna AI</h3>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">Always here to help</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-0.5">
+                <div className="flex items-center gap-1">
                   <button 
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="p-1.5 sm:p-2 hover:bg-white/10 text-slate-300 hover:text-white rounded-full transition-all active:scale-95"
+                    className="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-full transition-colors active:scale-95"
                     title={isExpanded ? "Minimize" : "Maximize"}
                   >
                     {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
@@ -917,7 +908,7 @@ export const Navbar = () => {
                   {chatStep === 'chat' && (
                     <button 
                       onClick={handleClearChat}
-                      className="p-1.5 sm:p-2 hover:bg-white/10 text-slate-300 hover:text-white rounded-full transition-all active:scale-95"
+                      className="p-2 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-full transition-colors active:scale-95"
                       title="Clear Chat"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -925,10 +916,10 @@ export const Navbar = () => {
                   )}
                   <button 
                     onClick={() => setIsChatOpen(false)}
-                    className="p-1.5 sm:p-2 hover:bg-white/10 text-slate-300 hover:text-white rounded-full transition-all active:scale-95"
+                    className="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-full transition-colors active:scale-95"
                     title="Close"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -944,46 +935,48 @@ export const Navbar = () => {
                       exit={{ opacity: 0, x: -20 }}
                       className="flex-1 p-6 flex flex-col justify-center overflow-y-auto"
                     >
-                      <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/50 mb-6 text-center">
-                        <div className="w-12 h-12 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm"><Bot className="w-6 h-6 text-slate-900 dark:text-white" /></div>
-                        <h4 className="font-semibold text-slate-800 dark:text-white text-base mb-1.5">Welcome to Learna! 👋</h4>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed px-2">
+                      <div className="bg-primary-50 dark:bg-primary-500/10 p-6 rounded-[1.5rem] border border-primary-100 dark:border-primary-500/20 mb-6 text-center">
+                        <div className="w-14 h-14 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                          <Bot className="w-7 h-7 text-primary-500" />
+                        </div>
+                        <h4 className="font-bold text-slate-900 dark:text-white text-lg mb-2">Welcome to Learna! 👋</h4>
+                        <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed px-2">
                         Let&apos;s get started. Please fill in your details below so we can assist you better.
                         </p>
                       </div>
                       
                       <form onSubmit={handleStartChat} className="space-y-4">
                         <div className="space-y-1.5">
-                          <label className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 ml-1 uppercase tracking-wider">Your Name</label>
+                          <label className="text-[11px] font-bold text-slate-500 dark:text-slate-400 ml-1 uppercase tracking-wider">Your Name</label>
                           <div className="relative">
-                            <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                             <input 
                               type="text" 
                               required
                               value={userName}
                               onChange={(e) => setUserName(e.target.value)}
                               placeholder="e.g. John Doe"
-                              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 dark:text-white rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-slate-400 focus:ring-4 focus:ring-slate-400/10 transition-all"
+                              className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 dark:text-white rounded-[1.25rem] pl-11 pr-4 py-3 text-[13px] font-medium focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all shadow-sm"
                             />
                           </div>
                         </div>
                         <div className="space-y-1.5">
-                          <label className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 ml-1 uppercase tracking-wider">Email Address</label>
+                          <label className="text-[11px] font-bold text-slate-500 dark:text-slate-400 ml-1 uppercase tracking-wider">Email Address</label>
                           <div className="relative">
-                            <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                             <input 
                               type="email" 
                               required
                               value={userEmail}
                               onChange={(e) => setUserEmail(e.target.value)}
                               placeholder="you@example.com"
-                              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 dark:text-white rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-slate-400 focus:ring-4 focus:ring-slate-400/10 transition-all"
+                              className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 dark:text-white rounded-[1.25rem] pl-11 pr-4 py-3 text-[13px] font-medium focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all shadow-sm"
                             />
                           </div>
                         </div>
                         <button 
                           type="submit"
-                          className="w-full bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-white text-white dark:text-slate-900 rounded-xl py-3 px-4 text-[13px] font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group mt-2"
+                          className="w-full bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 rounded-[1.25rem] py-3.5 px-4 text-[13px] font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group mt-2"
                         >
                           Start Conversation
                           <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform opacity-70" />
@@ -997,39 +990,39 @@ export const Navbar = () => {
                       animate={{ opacity: 1, x: 0 }}
                       className="flex-1 flex flex-col h-full"
                     >
-                      <div ref={chatScrollRef} className="flex-1 p-4 flex flex-col gap-4 overflow-y-auto scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                      <div className="flex-1 p-5 flex flex-col gap-5 overflow-y-auto scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                         {messages.map((msg) => (
                           <motion.div 
                             layout 
                             initial={{ opacity: 0, y: 10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             key={msg.id} 
-                            className={`flex gap-2.5 w-full ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                            className={`flex gap-3 w-full ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                           >
                             {msg.sender === 'bot' && (
-                              <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 mt-0.5 shadow-sm border border-slate-200 dark:border-slate-700">
-                                <Sparkles className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
+                              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shrink-0 mt-1 shadow-md text-white">
+                                <Sparkles className="w-4 h-4" />
                               </div>
                             )}
-                            <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} max-w-[80%]`}>
-                              <div className={`px-3.5 py-2.5 rounded-2xl text-[13px] leading-relaxed shadow-sm text-left ${
+                            <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} max-w-[85%]`}>
+                              <div className={`px-4 py-3 rounded-[1.25rem] text-[13.5px] leading-relaxed shadow-sm text-left font-medium ${
                                 msg.sender === 'bot' 
-                                  ? 'bg-slate-50 dark:bg-slate-800 rounded-tl-sm border border-slate-100 dark:border-slate-700/50 text-slate-700 dark:text-slate-200' 
-                                  : 'bg-slate-900 dark:bg-primary-600 rounded-tr-sm text-white'
+                                  ? 'bg-slate-100 dark:bg-slate-800 rounded-tl-sm text-slate-800 dark:text-slate-200' 
+                                  : 'bg-primary-500 text-white rounded-tr-sm'
                               }`}>
                                 {msg.text}
                               </div>
-                              <span className="text-[10px] text-slate-400 dark:text-slate-500 mt-1.5 px-1.5 font-medium">{msg.time}</span>
+                              <span className="text-[10px] text-slate-400 dark:text-slate-500 mt-1.5 px-1 font-semibold">{msg.time}</span>
                             </div>
                           </motion.div>
                         ))}
                         
                         {isTyping && (
-                          <motion.div layout initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9 }} className="flex gap-2.5 w-full justify-start">
-                            <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 mt-0.5 shadow-sm border border-slate-200 dark:border-slate-700">
-                              <Sparkles className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
+                          <motion.div layout initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9 }} className="flex gap-3 w-full justify-start">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shrink-0 mt-1 shadow-md text-white">
+                              <Sparkles className="w-4 h-4" />
                             </div>
-                            <div className="bg-slate-50 dark:bg-slate-800 px-3.5 py-3 rounded-2xl rounded-tl-sm shadow-sm border border-slate-100 dark:border-slate-700/50 self-start flex gap-1.5 items-center h-[36px]">
+                            <div className="bg-slate-100 dark:bg-slate-800 px-4 py-3.5 rounded-[1.25rem] rounded-tl-sm shadow-sm self-start flex gap-1.5 items-center h-[42px]">
                               <span className="w-1.5 h-1.5 bg-slate-400 dark:bg-slate-400 rounded-full animate-bounce"></span>
                               <span className="w-1.5 h-1.5 bg-slate-400 dark:bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
                               <span className="w-1.5 h-1.5 bg-slate-400 dark:bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
@@ -1038,12 +1031,12 @@ export const Navbar = () => {
                         )}
   
                         {messages.length === 1 && (
-                          <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="flex flex-wrap gap-2 mt-1 ml-10">
+                          <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="flex flex-wrap gap-2 mt-2 ml-11">
                             {quickTopics.map((topic) => (
                               <button 
                                 key={topic}
                                 onClick={() => handleSendMessage(topic)}
-                                className="px-3.5 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-[11px] font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-sm active:scale-95"
+                                className="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-full text-[12px] font-bold hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-all shadow-sm active:scale-95 hover:border-primary-200 dark:hover:border-primary-500/30"
                               >
                                 {topic}
                               </button>
@@ -1053,30 +1046,29 @@ export const Navbar = () => {
                       </div>
                       
                       {/* Input Area */}
-                      <div className="p-3 bg-white dark:bg-slate-900 shrink-0">
-                        <div className="flex items-center bg-slate-100 dark:bg-slate-800 rounded-full px-2 py-1.5 transition-all focus-within:ring-2 focus-within:ring-slate-200 dark:focus-within:ring-slate-700">
-                          <button className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors rounded-full shrink-0">
-                            <Paperclip className="w-4 h-4" />
-                          </button>
+                      <div className="p-4 bg-transparent shrink-0 border-t border-slate-100 dark:border-slate-800/80">
+                        <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-full pl-4 pr-1.5 py-1.5 shadow-sm focus-within:ring-4 focus-within:ring-primary-500/10 focus-within:border-primary-500 transition-all">
                           <input 
                             type="text" 
                             value={chatInput}
                             onChange={(e) => setChatInput(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && !isTyping && handleSendMessage(chatInput)}
                             disabled={isTyping}
-                            placeholder="Ask a question..." 
-                            className="flex-1 bg-transparent border-none px-2 py-1 text-[13px] focus:outline-none focus:ring-0 dark:text-white disabled:opacity-50 min-w-0"
+                            placeholder="Message Learna AI..." 
+                            className="flex-1 bg-transparent border-none p-0 text-[13px] font-medium focus:outline-none focus:ring-0 dark:text-white disabled:opacity-50 min-w-0 placeholder:text-slate-400"
                           />
-                          <button className="p-2 text-slate-400 hover:text-yellow-500 transition-colors rounded-full shrink-0 hidden sm:block">
-                            <Smile className="w-4 h-4" />
-                          </button>
-                          <button 
-                            onClick={() => handleSendMessage(chatInput)}
-                            disabled={!chatInput.trim() || isTyping}
-                            className="w-8 h-8 rounded-full bg-slate-900 dark:bg-primary-600 text-white flex items-center justify-center hover:bg-slate-800 dark:hover:bg-primary-500 transition-all shrink-0 shadow-sm disabled:opacity-50 disabled:scale-95"
-                          >
-                            <Send className="w-3.5 h-3.5 ml-[-1px]" />
-                          </button>
+                          <div className="flex items-center gap-1 shrink-0 ml-2">
+                            <button className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors rounded-full hidden sm:block">
+                              <Paperclip className="w-4 h-4" />
+                            </button>
+                            <button 
+                              onClick={() => handleSendMessage(chatInput)}
+                              disabled={!chatInput.trim() || isTyping}
+                              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center hover:bg-primary-600 dark:hover:bg-primary-500 hover:text-white transition-all shadow-sm disabled:opacity-50 disabled:scale-95"
+                            >
+                              <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-[-1px] sm:ml-[-2px]" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </motion.div>
@@ -1090,25 +1082,24 @@ export const Navbar = () => {
         {/* Toggle Button */}
         <motion.button
           whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.9 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => setIsChatOpen(!isChatOpen)}
-          className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-tr from-slate-900 to-slate-800 dark:from-primary-600 dark:to-primary-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-slate-900/20 dark:shadow-primary-500/20 hover:shadow-xl hover:shadow-slate-900/30 transition-all relative z-50 group"
+          className="w-14 h-14 sm:w-16 sm:h-16 bg-slate-900 dark:bg-primary-500 rounded-full flex items-center justify-center text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] dark:shadow-primary-500/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all relative z-50 group border border-slate-700 dark:border-primary-400"
         >
           {!isChatOpen && !hasStartedChat && (
-            <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 sm:h-4 sm:w-4 items-center justify-center">
+            <span className="absolute -top-1 -right-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3.5 w-3.5 sm:h-4 sm:w-4 bg-rose-500 text-white text-[8px] sm:text-[9px] font-bold items-center justify-center border-2 border-white dark:border-slate-900">1</span>
+              <span className="relative inline-flex rounded-full h-4 w-4 sm:h-5 sm:w-5 bg-rose-500 text-white text-[9px] sm:text-[10px] font-bold items-center justify-center border-2 border-white dark:border-slate-900">1</span>
             </span>
           )}
           <AnimatePresence mode="wait">
             {isChatOpen ? (
               <motion.div key="close" initial={{ opacity: 0, rotate: -90, scale: 0.5 }} animate={{ opacity: 1, rotate: 0, scale: 1 }} exit={{ opacity: 0, rotate: 90, scale: 0.5 }} transition={{ duration: 0.2 }}>
-                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                <X className="w-6 h-6 sm:w-7 sm:h-7" />
               </motion.div>
             ) : (
               <motion.div key="chat" className="relative flex items-center justify-center" initial={{ opacity: 0, rotate: 90, scale: 0.5 }} animate={{ opacity: 1, rotate: 0, scale: 1 }} exit={{ opacity: 0, rotate: -90, scale: 0.5 }} transition={{ duration: 0.2 }}>
-                <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 group-hover:scale-110 group-hover:-rotate-12" />
-                <Sparkles className="absolute -bottom-1 -left-1 sm:-bottom-1.5 sm:-left-1.5 w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300 animate-pulse hidden group-hover:block" />
+                <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 group-hover:scale-110" />
               </motion.div>
             )}
           </AnimatePresence>

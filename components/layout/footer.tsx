@@ -1,4 +1,4 @@
-﻿'use client'
+﻿﻿'use client'
 
 import Link from 'next/link'
 import { Facebook, Twitter, Youtube, Linkedin, Instagram, Mail, Phone, MapPin } from 'lucide-react'
@@ -139,9 +139,9 @@ export const Footer = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
-          className="flex items-center justify-center cursor-default"
+          className="flex items-center justify-center cursor-default w-full px-4 sm:px-6 lg:px-8"
         >
-          <h1 className="whitespace-nowrap text-[12vw] sm:text-[11vw] md:text-[9.5vw] font-black leading-none tracking-tighter text-slate-800 transition-colors duration-500 hover:text-slate-700">
+          <h1 className="whitespace-nowrap text-[11.5vw] min-[400px]:text-[11vw] sm:text-[10vw] md:text-[9vw] lg:text-[8vw] xl:text-[7.5vw] 2xl:text-[6.5vw] font-black leading-none tracking-tighter text-slate-800 transition-colors duration-500 hover:text-slate-700">
             LEARNA ACADEMY
           </h1>
         </motion.div>
