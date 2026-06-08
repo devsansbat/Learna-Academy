@@ -92,7 +92,7 @@ const BatchCard = ({ course }: { course: Course }) => {
   const TagIcon = course.type === 'online' ? Wifi : MapPin
 
   return (
-    <div className={`relative w-full max-w-[320px] mx-auto bg-white dark:bg-slate-900 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.06)] hover:shadow-xl dark:shadow-none dark:border dark:border-slate-800 border-t-[4px] p-4 sm:p-5 flex flex-col transition-all hover:-translate-y-1 duration-300 ${borderGradientColor} h-full`}>
+    <div className={`relative w-full max-w-[320px] mx-auto bg-white dark:bg-slate-900 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-2xl dark:shadow-none dark:border dark:border-slate-800 border-t-[4px] p-4 sm:p-5 flex flex-col transition-all hover:-translate-y-1.5 duration-300 hover:border-primary-400 ${borderGradientColor} h-full`}>
       
       {/* Banner Image & Absolute Badges */}
       <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 mb-4">
@@ -207,7 +207,7 @@ const BatchCard = ({ course }: { course: Course }) => {
           </a>
           <a 
             href={course.link}
-            className="flex items-center justify-center h-10 sm:h-11 bg-primary-500 text-white rounded-xl font-bold text-[13px] hover:bg-primary-600 shadow-md shadow-primary-500/25 transition-all active:scale-95"
+          className="flex items-center justify-center h-10 sm:h-11 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-bold text-[13px] hover:from-primary-700 hover:to-primary-600 shadow-lg shadow-primary-500/30 transition-all active:scale-95"
           >
             Buy Now
           </a>
@@ -255,7 +255,7 @@ export const PopularCourses = () => {
         </div>
 
         {/* Grid Wrapper */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-8 pt-4 justify-items-center w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 pt-4 pb-12 justify-items-center w-full">
           {filteredCourses.map((course) => (
             <BatchCard key={course.id} course={course} />
           ))}

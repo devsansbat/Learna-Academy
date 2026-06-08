@@ -131,7 +131,7 @@ export const Footer = () => {
             className="relative flex justify-center items-center w-full"
           >
             
-            <h1 className="w-full text-center font-black uppercase whitespace-nowrap tracking-tight leading-none relative z-10 px-4" style={{ fontSize: "clamp(1.5rem, 8vw, 10rem)" }}>
+            <h1 className="w-full flex justify-center font-black uppercase whitespace-nowrap tracking-tighter leading-none relative z-10 px-4" style={{ fontSize: "clamp(1.5rem, 7.5vw, 10rem)" }}>
               <motion.span 
                 animate={{ backgroundPosition: ['200% center', '-200% center'] }}
                 transition={{ duration: 8, ease: "linear", repeat: Infinity }}

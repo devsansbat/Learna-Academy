@@ -217,7 +217,7 @@ export const PopularCourses = () => {
           onMouseLeave={handleMouseLeave}
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
-          className={`flex gap-6 overflow-x-auto pb-10 pt-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] ${isDragging ? 'cursor-grabbing snap-none' : 'cursor-grab snap-x snap-mandatory'}`}
+          className={`flex gap-5 sm:gap-6 overflow-x-auto pb-12 pt-4 px-4 sm:px-8 -mx-4 sm:-mx-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] ${isDragging ? 'cursor-grabbing snap-none' : 'cursor-grab snap-x snap-mandatory'}`}
         >
           {courses.map((course, index) => {
             const isInCart = cart.includes(course.id)
@@ -236,7 +236,7 @@ export const PopularCourses = () => {
                     e.preventDefault()
                   }
                 }}
-                className="snap-start shrink-0 w-[85vw] max-w-[320px] sm:w-[300px] lg:w-[320px] select-none group flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden transition-all duration-300 hover:border-primary-200 dark:hover:border-primary-800 hover:shadow-2xl hover:shadow-primary-500/10 dark:hover:shadow-primary-900/10 hover:-translate-y-1.5"
+                className="snap-start shrink-0 w-[85vw] max-w-[320px] sm:w-[300px] lg:w-[320px] select-none group flex flex-col bg-white dark:bg-slate-900 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-slate-200/80 dark:border-slate-800 overflow-hidden transition-all duration-300 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-2xl hover:shadow-primary-500/15 dark:hover:shadow-primary-900/20 hover:-translate-y-2"
               >
                 {/* Standardized Aspect Ratio Image */}
                 <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100 dark:bg-slate-800">

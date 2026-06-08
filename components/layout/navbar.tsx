@@ -871,7 +871,7 @@ export const Navbar = () => {
       )}
     </AnimatePresence>
 
-      <div className="fixed bottom-20 sm:bottom-24 right-4 sm:right-6 z-[100] flex flex-col items-end">
+      <div className="fixed bottom-24 sm:bottom-32 right-4 sm:right-6 z-[100] flex flex-col items-end">
         <AnimatePresence>
           {isChatOpen && (
             <motion.div
@@ -1084,7 +1084,7 @@ export const Navbar = () => {
           whileHover={{ scale: 1.05, y: -2 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsChatOpen(!isChatOpen)}
-          className="w-11 h-11 sm:w-12 sm:h-12 bg-slate-900 dark:bg-primary-500 rounded-full flex items-center justify-center text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] dark:shadow-primary-500/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.3)] transition-all relative z-50 group border border-slate-700 dark:border-primary-400"
+          className="w-12 h-12 sm:w-14 sm:h-14 bg-slate-900 dark:bg-primary-500 rounded-full flex items-center justify-center text-white shadow-[0_8px_30px_rgba(0,0,0,0.3)] dark:shadow-primary-500/40 hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] transition-all relative z-50 group border border-slate-700 dark:border-primary-400"
         >
           {!isChatOpen && !hasStartedChat && (
             <span className="absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5 items-center justify-center">
