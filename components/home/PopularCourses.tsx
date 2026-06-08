@@ -164,10 +164,12 @@ export const PopularCourses = () => {
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging) return
     e.preventDefault()
-    setHasDragged(true)
     if (scrollRef.current) {
       const x = e.pageX - scrollRef.current.offsetLeft
       const walk = (x - startX.current) * 1.5
+      if (Math.abs(walk) > 5) {
+        setHasDragged(true)
+      }
       scrollRef.current.scrollLeft = scrollLeft.current - walk
     }
   }

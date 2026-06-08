@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { Users, Calendar, Tag, Infinity as InfinityIcon, MessageCircle, Wifi, MapPin } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 // --- Data Models ---
 interface Course {
@@ -255,11 +256,23 @@ export const PopularCourses = () => {
         </div>
 
         {/* Grid Wrapper */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 pt-4 pb-12 justify-items-center w-full">
-          {filteredCourses.map((course) => (
-            <BatchCard key={course.id} course={course} />
-          ))}
-        </div>
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 pt-4 pb-12 justify-items-center w-full">
+          <AnimatePresence mode="popLayout">
+            {filteredCourses.map((course) => (
+              <motion.div
+                layout
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.25 }}
+                key={course.id}
+                className="w-full flex justify-center"
+              >
+                <BatchCard course={course} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
         
       </div>
     </section>

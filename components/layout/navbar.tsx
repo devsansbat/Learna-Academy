@@ -4,15 +4,27 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { Search, Menu, X, Sun, Moon, User, ShoppingCart, Bell, CheckCheck, Calendar, Award, Info, MessageSquare, Send, Sparkles, Trash2, Maximize2, Minimize2, Paperclip, Smile, Mail, Bot, ChevronRight, LayoutDashboard, Settings, LogOut, Flame, ChevronDown, Code, Server, Layout, Globe, Database, Cpu, BarChart, PenTool, Palette } from 'lucide-react'
+import { Search, Menu, X, Sun, Moon, User, ShoppingCart, Bell, CheckCheck, Calendar, Award, Info, MessageSquare, Send, Sparkles, Trash2, Maximize2, Minimize2, Paperclip, Smile, Mail, Bot, ChevronRight, ArrowRight, LayoutDashboard, Settings, LogOut, Flame, ChevronDown, Code, Server, Layout, Globe, Database, Cpu, BarChart, PenTool, Palette, ShieldCheck, Tag } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { motion, AnimatePresence } from 'framer-motion'
+
+// Mock Database mapping for Cart Panel rendering
+const COURSES_DB: Record<number, any> = {
+  1: { title: "Arjuna NEET 2.0 2027", price: 4999, originalPrice: 5500, image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop" },
+  2: { title: "Arjuna NEET 2027 + Lakshya NEET 2028", price: 8800, originalPrice: 12400, image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=400&fit=crop" },
+  3: { title: "Vidyapeeth 11 NEET (Target 2028)", price: 5000, originalPrice: null, image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=400&fit=crop" },
+  4: { title: "Lakshya JEE 2.0 2025", price: 4200, originalPrice: 5000, image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=400&fit=crop" },
+  5: { title: "Vidyapeeth 12 JEE (Target 2025)", price: 8000, originalPrice: null, image: "https://images.unsplash.com/photo-1588591795084-1770cb3be374?w=800&h=400&fit=crop" },
+  6: { title: "Udaan Class 10th 2025", price: 2500, originalPrice: 3000, image: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&h=400&fit=crop" }
+}
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [cartCount, setCartCount] = useState(0)
+  const [cartItems, setCartItems] = useState<number[]>([])
+  const [isCartOpen, setIsCartOpen] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const [showProfileMenu, setShowProfileMenu] = useState(false)
   const [expandedMobileMenu, setExpandedMobileMenu] = useState<string | null>(null)
@@ -128,13 +140,16 @@ export const Navbar = () => {
       const stored = window.localStorage.getItem('learna-cart')
       if (!stored) {
         setCartCount(0)
+        setCartItems([])
         return
       }
       try {
         const parsed = JSON.parse(stored)
         setCartCount(Array.isArray(parsed) ? parsed.length : 0)
+        setCartItems(Array.isArray(parsed) ? parsed : [])
       } catch {
         setCartCount(0)
+        setCartItems([])
       }
     }
 
@@ -148,6 +163,17 @@ export const Navbar = () => {
       window.removeEventListener('learna-cart-update', updateCartCount)
     }
   }, [])
+
+  const removeFromCart = (id: number) => {
+    const newCart = cartItems.filter(itemId => itemId !== id)
+    window.localStorage.setItem('learna-cart', JSON.stringify(newCart))
+    window.dispatchEvent(new Event('learna-cart-update'))
+  }
+
+  const clearCart = () => {
+    window.localStorage.setItem('learna-cart', JSON.stringify([]))
+    window.dispatchEvent(new Event('learna-cart-update'))
+  }
 
   const handleSendMessage = (text: string) => {
     if (!text.trim()) return
@@ -361,6 +387,221 @@ export const Navbar = () => {
                   )}
                 </AnimatePresence>
               </div>
+
+      {/* Sliding Advanced Cart */}
+      <AnimatePresence>
+        {isCartOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[110] bg-slate-900/20 dark:bg-slate-900/60 backdrop-blur-sm"
+              onClick={() => setIsCartOpen(false)}
+            />
+            {/* Slide-over Panel */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 right-0 z-[120] w-full sm:w-[440px] bg-white dark:bg-slate-900 shadow-[0_0_50px_rgba(0,0,0,0.15)] dark:shadow-primary-900/20 flex flex-col overflow-hidden"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl z-10">
+                <h2 className="text-[22px] font-black text-slate-900 dark:text-white flex items-center gap-3 tracking-tight">
+                  <div className="w-10 h-10 rounded-full bg-primary-50 dark:bg-primary-500/10 flex items-center justify-center text-primary-600 dark:text-primary-400">
+                    <ShoppingCart className="w-5 h-5" />
+                  </div>
+                  Your Cart
+                  {cartCount > 0 && (
+                    <span className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[11px] py-1 px-2.5 rounded-full font-bold ml-1">{cartCount}</span>
+                  )}
+                </h2>
+            <div className="flex items-center gap-2">
+              {cartCount > 0 && (
+                <button onClick={clearCart} className="text-[11px] font-bold text-rose-500 hover:text-rose-600 dark:hover:text-rose-400 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 px-3 py-1.5 rounded-full transition-colors active:scale-95 shadow-sm border border-rose-100 dark:border-rose-500/20">
+                  Clear All
+                </button>
+              )}
+              <button onClick={() => setIsCartOpen(false)} className="p-2.5 rounded-full bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors active:scale-95 border border-transparent dark:hover:border-slate-700">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+              </div>
+
+              {/* Body */}
+              <div className="flex-1 overflow-y-auto p-6 bg-slate-50/50 dark:bg-slate-900/50 relative">
+                <AnimatePresence mode="wait">
+                  {cartItems.length > 0 ? (
+                <motion.div key="cart-items" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.2 } }} className="space-y-5">
+                  {/* Gamification Progress Bar */}
+                  {(() => {
+                    const grandTotal = cartItems.reduce((acc, id) => acc + (COURSES_DB[id]?.price || 0), 0);
+                    const targetAmount = 15000;
+                    const progress = Math.min((grandTotal / targetAmount) * 100, 100);
+                    const amountLeft = Math.max(targetAmount - grandTotal, 0);
+                    return (
+                      <div className="bg-white dark:bg-slate-800/80 rounded-[1.25rem] p-4 sm:p-5 border border-slate-100 dark:border-slate-700/50 shadow-sm relative overflow-hidden group/promo">
+                        <div className="absolute -right-4 -top-4 p-4 opacity-5 group-hover/promo:opacity-10 group-hover/promo:scale-110 transition-all duration-500 pointer-events-none">
+                           <Award className="w-24 h-24 text-primary-500" />
+                        </div>
+                        <div className="flex items-center justify-between mb-3 relative z-10">
+                          <span className="text-[13px] font-bold text-slate-700 dark:text-slate-300">
+                            {amountLeft > 0 ? (
+                              <>Add <span className="text-primary-600 dark:text-primary-400">₹{amountLeft.toLocaleString('en-IN')}</span> more to unlock <strong className="text-emerald-500">Free Mock Tests</strong> 🎁</>
+                            ) : (
+                              <span className="text-emerald-500 flex items-center gap-1.5"><CheckCheck className="w-4 h-4" /> Free Mock Tests Unlocked!</span>
+                            )}
+                          </span>
+                        </div>
+                        <div className="h-2.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden relative z-10 shadow-inner">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className={`h-full rounded-full relative overflow-hidden ${progress >= 100 ? 'bg-emerald-500' : 'bg-gradient-to-r from-primary-500 to-indigo-500'}`}
+                          >
+                            <motion.div animate={{ x: ['-100%', '200%'] }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} className="absolute inset-0 bg-white/30 w-1/2 skew-x-12"></motion.div>
+                          </motion.div>
+                        </div>
+                      </div>
+                    )
+                  })()}
+
+                    <AnimatePresence initial={false}>
+                      {cartItems.map((id) => {
+                        const course = COURSES_DB[id];
+                        if (!course) return null;
+                        const discount = course.originalPrice ? Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100) : 0;
+                        return (
+                          <motion.div 
+                            layout
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
+                            key={id} 
+                            className="group relative flex gap-4 p-4 rounded-[1.25rem] bg-white dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/50 shadow-sm hover:shadow-md hover:border-primary-200 dark:hover:border-primary-500/30 transition-all duration-300"
+                          >
+                            <div className="w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 relative">
+                              <img src={course.image} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                              {discount > 0 && (
+                                <div className="absolute top-2 left-2 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shadow-sm">
+                                  -{discount}%
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex flex-col justify-center flex-1 py-0.5 min-w-0">
+                              <div className="flex justify-between items-start gap-2">
+                                <h3 className="text-[15px] font-bold text-slate-900 dark:text-white leading-snug line-clamp-2 pr-6">{course.title}</h3>
+                              </div>
+                          <p className="text-[10px] font-black text-primary-600 dark:text-primary-400 mt-2 uppercase tracking-widest bg-primary-50 dark:bg-primary-500/10 w-fit px-2.5 py-1 rounded-md border border-primary-100 dark:border-primary-500/20 flex items-center gap-1.5"><Globe className="w-3 h-3" /> Online Batch</p>
+                              <div className="flex items-end gap-2 mt-auto pt-2">
+                                <span className="text-[18px] font-black text-slate-900 dark:text-white leading-none">₹{course.price.toLocaleString('en-IN')}</span>
+                                {course.originalPrice && <s className="text-[12px] font-semibold text-slate-400 dark:text-slate-500 leading-none mb-0.5">₹{course.originalPrice.toLocaleString('en-IN')}</s>}
+                              </div>
+                            </div>
+                            <button onClick={() => removeFromCart(id)} className="absolute top-3 right-3 text-slate-300 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 p-2 rounded-full transition-colors active:scale-95" title="Remove item">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </motion.div>
+                        )
+                      })}
+                    </AnimatePresence>
+                    </motion.div>
+                  ) : (
+                    <motion.div 
+                      key="empty-cart"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
+                      className="flex flex-col items-center justify-center h-full text-center space-y-4"
+                    >
+                    <div className="w-32 h-32 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 relative">
+                      <ShoppingCart className="w-12 h-12 text-slate-300 dark:text-slate-600" />
+                      <motion.div 
+                        animate={{ y: [0, -8, 0] }} 
+                        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                        className="absolute -top-2 -right-2 w-10 h-10 bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-md border border-slate-100 dark:border-slate-600"
+                      >
+                        <Sparkles className="w-5 h-5 text-amber-400" />
+                      </motion.div>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Your cart is empty</h3>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 max-w-[260px] mx-auto leading-relaxed font-medium">Looks like you haven't added any premium batches to your cart yet.</p>
+                    </div>
+                    <button onClick={() => setIsCartOpen(false)} className="mt-6 px-8 py-3.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:bg-primary-600 dark:hover:bg-primary-500 hover:text-white dark:hover:text-white transition-all shadow-lg hover:shadow-primary-500/25 active:scale-95">
+                      Explore Batches
+                    </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Footer Checkout Area */}
+              <AnimatePresence>
+                {cartItems.length > 0 && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 50, transition: { duration: 0.2 } }}
+                    className="border-t border-slate-200/60 dark:border-slate-800 p-6 sm:px-8 sm:py-6 bg-white dark:bg-slate-950 z-10 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] dark:shadow-none"
+                  >
+              {/* Promo Code Input */}
+              <div className="flex gap-2 mb-4">
+                <div className="relative flex-1">
+                  <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <input type="text" placeholder="Enter Promo Code" className="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-3 py-3 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 font-bold placeholder:text-slate-400 dark:text-white transition-all shadow-sm" />
+                </div>
+                <button className="px-5 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-[13px] rounded-xl hover:bg-primary-600 dark:hover:bg-primary-500 hover:text-white transition-colors active:scale-95 shrink-0 shadow-sm">
+                  Apply
+                </button>
+              </div>
+
+                  <div className="bg-slate-50 dark:bg-slate-900/80 rounded-[1.25rem] p-5 mb-5 border border-slate-100 dark:border-slate-800">
+                    <div className="space-y-3">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-500 dark:text-slate-400 font-semibold">Subtotal</span>
+                        <span className="font-bold text-slate-700 dark:text-slate-300">
+                          ₹{cartItems.reduce((acc, id) => acc + (COURSES_DB[id]?.originalPrice || COURSES_DB[id]?.price || 0), 0).toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">Total Savings</span>
+                        <span className="font-black text-emerald-600 dark:text-emerald-400">
+                          - ₹{cartItems.reduce((acc, id) => {
+                            const c = COURSES_DB[id];
+                            return acc + (c ? ((c.originalPrice || c.price) - c.price) : 0);
+                          }, 0).toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                      <div className="pt-4 mt-4 border-t border-slate-200/80 dark:border-slate-800 flex justify-between items-center">
+                        <span className="font-black text-slate-900 dark:text-white text-base">Grand Total</span>
+                        <span className="text-[22px] font-black text-primary-600 dark:text-primary-400">
+                          ₹{cartItems.reduce((acc, id) => acc + (COURSES_DB[id]?.price || 0), 0).toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <button className="relative overflow-hidden w-full py-4 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 dark:from-white dark:to-slate-100 text-white dark:text-slate-900 font-black text-[15px] shadow-[0_8px_20px_rgba(0,0,0,0.15)] dark:shadow-white/10 hover:shadow-[0_12px_30px_rgba(0,0,0,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 group">
+                    <motion.div animate={{ x: ['-100%', '200%'] }} transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }} className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 dark:via-slate-900/10 to-transparent w-1/2 skew-x-12"></motion.div>
+                    <span className="relative z-10 flex items-center gap-2 tracking-wide">PROCEED TO CHECKOUT <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
+                  </button>
+                  
+                  <div className="flex items-center justify-center gap-1.5 mt-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                    <span>Secure & Encrypted</span>
+                  </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
             </div>
 
           {/* Right Area */}
@@ -551,7 +792,7 @@ export const Navbar = () => {
                   )}
                 </AnimatePresence>
               </div>
-              <Link href="/cart" className="relative p-2 sm:p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label={`Cart with ${cartCount} items`}>
+              <button onClick={() => setIsCartOpen(true)} className="relative p-2 sm:p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label={`Cart with ${cartCount} items`}>
                 <div className="relative flex items-center justify-center">
                   <ShoppingCart className="w-5 h-5 sm:w-[20px] sm:h-[20px] text-slate-600 dark:text-slate-300" />
                   {cartCount > 0 && (
@@ -562,7 +803,7 @@ export const Navbar = () => {
                     </span>
                   )}
                 </div>
-              </Link>
+              </button>
               
               {/* Advanced Profile Dropdown */}
               <div className="hidden sm:block relative" ref={profileRef}>
@@ -659,6 +900,163 @@ export const Navbar = () => {
         </div>
       </div>
       </nav>
+
+      {/* Sliding Advanced Cart */}
+      <AnimatePresence>
+        {isCartOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[110] bg-slate-900/20 dark:bg-slate-900/60 backdrop-blur-sm"
+              onClick={() => setIsCartOpen(false)}
+            />
+            {/* Slide-over Panel */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 right-0 z-[120] w-full sm:w-[440px] bg-white dark:bg-slate-900 shadow-[0_0_50px_rgba(0,0,0,0.15)] dark:shadow-primary-900/20 flex flex-col overflow-hidden"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl z-10">
+                <h2 className="text-[22px] font-black text-slate-900 dark:text-white flex items-center gap-3 tracking-tight">
+                  <div className="w-10 h-10 rounded-full bg-primary-50 dark:bg-primary-500/10 flex items-center justify-center text-primary-600 dark:text-primary-400">
+                    <ShoppingCart className="w-5 h-5" />
+                  </div>
+                  Your Cart
+                  {cartCount > 0 && (
+                    <span className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[11px] py-1 px-2.5 rounded-full font-bold ml-1">{cartCount}</span>
+                  )}
+                </h2>
+                <button onClick={() => setIsCartOpen(false)} className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors active:scale-95">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="flex-1 overflow-y-auto p-6 bg-slate-50/50 dark:bg-slate-900/50 relative">
+                <AnimatePresence mode="wait">
+                  {cartItems.length > 0 ? (
+                    <motion.div key="cart-items" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.2 } }} className="space-y-4">
+                    <AnimatePresence initial={false}>
+                      {cartItems.map((id) => {
+                        const course = COURSES_DB[id];
+                        if (!course) return null;
+                        const discount = course.originalPrice ? Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100) : 0;
+                        return (
+                          <motion.div 
+                            layout
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
+                            key={id} 
+                            className="group relative flex gap-4 p-4 rounded-[1.25rem] bg-white dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/50 shadow-sm hover:shadow-md hover:border-primary-200 dark:hover:border-primary-500/30 transition-all duration-300"
+                          >
+                            <div className="w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 relative">
+                              <img src={course.image} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                              {discount > 0 && (
+                                <div className="absolute top-2 left-2 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shadow-sm">
+                                  -{discount}%
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex flex-col justify-center flex-1 py-0.5 min-w-0">
+                              <div className="flex justify-between items-start gap-2">
+                                <h3 className="text-[15px] font-bold text-slate-900 dark:text-white leading-snug line-clamp-2 pr-6">{course.title}</h3>
+                              </div>
+                              <p className="text-[11px] font-bold text-primary-600 dark:text-primary-400 mt-1.5 uppercase tracking-wider bg-primary-50 dark:bg-primary-500/10 w-fit px-2 py-0.5 rounded">Online Batch</p>
+                              <div className="flex items-end gap-2 mt-auto pt-2">
+                                <span className="text-[18px] font-black text-slate-900 dark:text-white leading-none">₹{course.price.toLocaleString('en-IN')}</span>
+                                {course.originalPrice && <s className="text-[12px] font-semibold text-slate-400 dark:text-slate-500 leading-none mb-0.5">₹{course.originalPrice.toLocaleString('en-IN')}</s>}
+                              </div>
+                            </div>
+                            <button onClick={() => removeFromCart(id)} className="absolute top-3 right-3 text-slate-300 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 p-2 rounded-full transition-colors active:scale-95" title="Remove item">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </motion.div>
+                        )
+                      })}
+                    </AnimatePresence>
+                    </motion.div>
+                  ) : (
+                    <motion.div 
+                      key="empty-cart"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
+                      className="flex flex-col items-center justify-center h-full text-center space-y-4"
+                    >
+                    <div className="w-32 h-32 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 relative">
+                      <ShoppingCart className="w-12 h-12 text-slate-300 dark:text-slate-600" />
+                      <motion.div 
+                        animate={{ y: [0, -8, 0] }} 
+                        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                        className="absolute -top-2 -right-2 w-10 h-10 bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-md border border-slate-100 dark:border-slate-600"
+                      >
+                        <Sparkles className="w-5 h-5 text-amber-400" />
+                      </motion.div>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">Your cart is empty</h3>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 max-w-[260px] mx-auto leading-relaxed font-medium">Looks like you haven't added any premium batches to your cart yet.</p>
+                    </div>
+                    <button onClick={() => setIsCartOpen(false)} className="mt-6 px-8 py-3.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:bg-primary-600 dark:hover:bg-primary-500 hover:text-white dark:hover:text-white transition-all shadow-lg hover:shadow-primary-500/25 active:scale-95">
+                      Explore Batches
+                    </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Footer Checkout Area */}
+              <AnimatePresence>
+                {cartItems.length > 0 && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 50, transition: { duration: 0.2 } }}
+                    className="border-t border-slate-200/60 dark:border-slate-800 p-6 bg-white dark:bg-slate-900 z-10 shadow-[0_-10px_30px_rgba(0,0,0,0.02)]"
+                  >
+                  <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-5 mb-5 border border-slate-100 dark:border-slate-700/50">
+                    <div className="space-y-3">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-500 dark:text-slate-400 font-semibold">Subtotal</span>
+                        <span className="font-bold text-slate-700 dark:text-slate-300">
+                          ₹{cartItems.reduce((acc, id) => acc + (COURSES_DB[id]?.originalPrice || COURSES_DB[id]?.price || 0), 0).toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">Total Savings</span>
+                        <span className="font-black text-emerald-600 dark:text-emerald-400">
+                          - ₹{cartItems.reduce((acc, id) => {
+                            const c = COURSES_DB[id];
+                            return acc + (c ? ((c.originalPrice || c.price) - c.price) : 0);
+                          }, 0).toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                      <div className="pt-3 mt-3 border-t border-slate-200/80 dark:border-slate-700/80 flex justify-between items-center">
+                        <span className="font-black text-slate-900 dark:text-white text-base">Grand Total</span>
+                        <span className="text-[22px] font-black text-primary-600 dark:text-primary-400">
+                          ₹{cartItems.reduce((acc, id) => acc + (COURSES_DB[id]?.price || 0), 0).toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <button className="relative overflow-hidden w-full py-4 rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 dark:from-white dark:to-slate-100 text-white dark:text-slate-900 font-black text-[15px] shadow-[0_8px_20px_rgba(0,0,0,0.1)] dark:shadow-white/10 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group">
+                    <span className="relative z-10 flex items-center gap-2">Proceed to Checkout <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
+                  </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Mobile Menu */}
     <AnimatePresence>
