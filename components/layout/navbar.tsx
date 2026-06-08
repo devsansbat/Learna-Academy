@@ -437,79 +437,182 @@ export const Navbar = () => {
                 <AnimatePresence mode="wait">
                   {cartItems.length > 0 ? (
                 <motion.div key="cart-items" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.2 } }} className="space-y-5">
-                  {/* Gamification Progress Bar */}
                   {(() => {
                     const grandTotal = cartItems.reduce((acc, id) => acc + (COURSES_DB[id]?.price || 0), 0);
+                        const subtotal = cartItems.reduce((acc, id) => acc + (COURSES_DB[id]?.originalPrice || COURSES_DB[id]?.price || 0), 0);
+                        const discountAmount = cartItems.reduce((acc, id) => {
+                          const c = COURSES_DB[id];
+                          return acc + (c ? ((c.originalPrice || c.price) - c.price) : 0);
+                        }, 0);
+                        const finalTotal = subtotal - discountAmount + tipAmount;
+
                     const targetAmount = 15000;
                     const progress = Math.min((grandTotal / targetAmount) * 100, 100);
                     const amountLeft = Math.max(targetAmount - grandTotal, 0);
-                    return (
-                      <div className="bg-white dark:bg-slate-800/80 rounded-[1.25rem] p-4 sm:p-5 border border-slate-100 dark:border-slate-700/50 shadow-sm relative overflow-hidden group/promo">
-                        <div className="absolute -right-4 -top-4 p-4 opacity-5 group-hover/promo:opacity-10 group-hover/promo:scale-110 transition-all duration-500 pointer-events-none">
-                           <Award className="w-24 h-24 text-primary-500" />
-                        </div>
-                        <div className="flex items-center justify-between mb-3 relative z-10">
-                          <span className="text-[13px] font-bold text-slate-700 dark:text-slate-300">
-                            {amountLeft > 0 ? (
-                              <>Add <span className="text-primary-600 dark:text-primary-400">₹{amountLeft.toLocaleString('en-IN')}</span> more to unlock <strong className="text-emerald-500">Free Mock Tests</strong> 🎁</>
-                            ) : (
-                              <span className="text-emerald-500 flex items-center gap-1.5"><CheckCheck className="w-4 h-4" /> Free Mock Tests Unlocked!</span>
-                            )}
-                          </span>
-                        </div>
-                        <div className="h-2.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden relative z-10 shadow-inner">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${progress}%` }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
-                            className={`h-full rounded-full relative overflow-hidden ${progress >= 100 ? 'bg-emerald-500' : 'bg-gradient-to-r from-primary-500 to-indigo-500'}`}
-                          >
-                            <motion.div animate={{ x: ['-100%', '200%'] }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} className="absolute inset-0 bg-white/30 w-1/2 skew-x-12"></motion.div>
-                          </motion.div>
-                        </div>
-                      </div>
-                    )
-                  })()}
 
-                    <AnimatePresence initial={false}>
-                      {cartItems.map((id) => {
-                        const course = COURSES_DB[id];
-                        if (!course) return null;
-                        const discount = course.originalPrice ? Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100) : 0;
-                        return (
-                          <motion.div 
-                            layout
-                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
-                            key={id} 
-                            className="group relative flex gap-4 p-4 rounded-[1.25rem] bg-white dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/50 shadow-sm hover:shadow-md hover:border-primary-200 dark:hover:border-primary-500/30 transition-all duration-300"
-                          >
-                            <div className="w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 relative">
-                              <img src={course.image} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                              {discount > 0 && (
-                                <div className="absolute top-2 left-2 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shadow-sm">
-                                  -{discount}%
+                    return (
+                          <>
+                            {/* Gamification Progress Bar */}
+                            <div className="bg-white dark:bg-slate-800/80 rounded-[1.25rem] p-4 sm:p-5 border border-slate-100 dark:border-slate-700/50 shadow-sm relative overflow-hidden group/promo">
+                              <div className="absolute -right-4 -top-4 p-4 opacity-5 group-hover/promo:opacity-10 group-hover/promo:scale-110 transition-all duration-500 pointer-events-none">
+                                 <Award className="w-24 h-24 text-primary-500" />
+                              </div>
+                              <div className="flex items-center justify-between mb-3 relative z-10">
+                                <span className="text-[13px] font-bold text-slate-700 dark:text-slate-300">
+                                  {amountLeft > 0 ? (
+                                    <>Add <span className="text-primary-600 dark:text-primary-400">₹{amountLeft.toLocaleString('en-IN')}</span> more to unlock <strong className="text-emerald-500">Free Mock Tests</strong> 🎁</>
+                                  ) : (
+                                    <span className="text-emerald-500 flex items-center gap-1.5"><CheckCheck className="w-4 h-4" /> Free Mock Tests Unlocked!</span>
+                                  )}
+                                </span>
+                              </div>
+                              <div className="h-2.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden relative z-10 shadow-inner">
+                                <motion.div
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${progress}%` }}
+                                  transition={{ duration: 0.8, ease: "easeOut" }}
+                                  className={`h-full rounded-full relative overflow-hidden ${progress >= 100 ? 'bg-emerald-500' : 'bg-gradient-to-r from-primary-500 to-indigo-500'}`}
+                                >
+                                  <motion.div animate={{ x: ['-100%', '200%'] }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} className="absolute inset-0 bg-white/30 w-1/2 skew-x-12"></motion.div>
+                                </motion.div>
+                              </div>
+                        </div>
+
+                            {/* Cart Items List */}
+                            <div className="space-y-4">
+                              <AnimatePresence initial={false}>
+                                {cartItems.map((id) => {
+                                  const course = COURSES_DB[id];
+                                  if (!course) return null;
+                                  const discount = course.originalPrice ? Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100) : 0;
+                                  return (
+                                    <motion.div 
+                                      layout
+                                      initial={{ opacity: 0, scale: 0.9, x: 20 }}
+                                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                                      exit={{ opacity: 0, scale: 0.9, x: -20, transition: { duration: 0.2 } }}
+                                      key={id} 
+                                      className="group relative flex gap-4 p-4 rounded-[1.5rem] bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/50 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-xl dark:hover:shadow-primary-900/20 hover:border-primary-200 dark:hover:border-primary-500/40 transition-all duration-300"
+                                    >
+                                      <div className="w-24 sm:w-28 shrink-0 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 relative aspect-square self-start border border-slate-100 dark:border-slate-700/50">
+                                        <img src={course.image} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        {discount > 0 && (
+                                          <div className="absolute top-1.5 left-1.5 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shadow-md">
+                                            -{discount}%
+                                          </div>
+                                        )}
+                                      </div>
+                                      <div className="flex flex-col flex-1 min-w-0">
+                                        <div className="flex justify-between items-start gap-2">
+                                          <h3 className="text-[14px] sm:text-[15px] font-bold text-slate-900 dark:text-white leading-snug line-clamp-2 pr-6 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{course.title}</h3>
+                                        </div>
+                                        <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                                          <span className="text-[9px] font-black text-primary-600 dark:text-primary-400 uppercase tracking-widest bg-primary-50 dark:bg-primary-500/10 px-2 py-0.5 rounded border border-primary-100 dark:border-primary-500/20 flex items-center gap-1"><Globe className="w-2.5 h-2.5" /> Online</span>
+                                          <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1"><CheckCheck className="w-3 h-3 text-emerald-500"/> Instant Access ⚡</span>
+                                        </div>
+                                        <div className="flex items-end gap-2 mt-2">
+                                          <span className="text-[18px] font-black text-slate-900 dark:text-white leading-none">₹{course.price.toLocaleString('en-IN')}</span>
+                                          {course.originalPrice && <s className="text-[12px] font-medium text-slate-400 dark:text-slate-500 leading-none mb-0.5">₹{course.originalPrice.toLocaleString('en-IN')}</s>}
+                                        </div>
+                                        {discount > 0 && (
+                                          <div className="mt-2.5 bg-emerald-50/80 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-lg p-2.5">
+                                             <p className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5 mb-0.5"><Tag className="w-3 h-3"/> '{course.offer || 'SPECIAL_OFFER'}' Applied</p>
+                                             <p className="text-[10px] font-semibold text-emerald-600/80 dark:text-emerald-500/80">You save ₹{(course.originalPrice - course.price).toLocaleString('en-IN')} ({discount}% OFF)</p>
+                                          </div>
+                                        )}
+                                      </div>
+                                      <button onClick={() => removeFromCart(id)} className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 text-slate-400 bg-white dark:bg-slate-800 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/20 w-7 h-7 flex items-center justify-center rounded-full transition-all active:scale-95 shadow-sm border border-slate-200 dark:border-slate-700" title="Remove item">
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                      </button>
+                                    </motion.div>
+                                  )
+                                })}
+                              </AnimatePresence>
+                        </div>
+
+                            {/* Delivery Time */}
+                            <div className="bg-white dark:bg-slate-800/80 rounded-[1.25rem] p-4 border border-slate-100 dark:border-slate-700/50 shadow-sm flex items-center gap-4">
+                              <div className="w-10 h-10 rounded-full bg-sky-50 dark:bg-sky-500/10 flex items-center justify-center shrink-0">
+                                <Clock className="w-5 h-5 text-sky-500" />
+                              </div>
+                              <div>
+                                <h4 className="font-bold text-slate-900 dark:text-white text-[14px]">Delivery Time</h4>
+                                <p className="text-[12px] font-medium text-slate-500">Instant Access ⚡ via Email & Dashboard</p>
+                              </div>
+                        </div>
+
+                            {/* Tip your delivery partner */}
+                            <div className="bg-white dark:bg-slate-800/80 rounded-[1.25rem] p-4 sm:p-5 border border-slate-100 dark:border-slate-700/50 shadow-sm">
+                              <h4 className="font-bold text-slate-900 dark:text-white text-[14px] mb-1 flex items-center gap-2"><HeartHandshake className="w-4 h-4 text-rose-500"/> Tip your educator</h4>
+                              <p className="text-[11px] text-slate-500 mb-4">Your tip goes entirely to the platform mentor/partner.</p>
+                              <div className="flex items-center gap-3">
+                                {[20, 30, 50].map(amt => (
+                                  <button key={amt} onClick={() => setTipAmount(amt === tipAmount ? 0 : amt)} className={`flex-1 py-2.5 rounded-xl border text-[13px] font-bold transition-all ${tipAmount === amt ? 'bg-rose-50 dark:bg-rose-500/10 border-rose-500 text-rose-600 dark:text-rose-400 shadow-sm' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-rose-200 dark:hover:border-rose-500/50'}`}>
+                                    ₹{amt}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Coupons & Offers */}
+                            <div className="bg-white dark:bg-slate-800/80 rounded-[1.25rem] p-4 sm:p-5 border border-slate-100 dark:border-slate-700/50 shadow-sm">
+                              <h4 className="font-bold text-slate-900 dark:text-white text-[14px] mb-3 flex items-center gap-2"><Tag className="w-4 h-4 text-primary-500"/> Coupons & Offers</h4>
+                              <div className="flex gap-2">
+                                <div className="relative flex-1">
+                                  <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                  <input type="text" placeholder="Enter Promo Code" className="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary-500/50 font-bold placeholder:text-slate-400 dark:text-white transition-all shadow-sm" />
                                 </div>
-                              )}
-                            </div>
-                            <div className="flex flex-col justify-center flex-1 py-0.5 min-w-0">
-                              <div className="flex justify-between items-start gap-2">
-                                <h3 className="text-[15px] font-bold text-slate-900 dark:text-white leading-snug line-clamp-2 pr-6">{course.title}</h3>
-                              </div>
-                          <p className="text-[10px] font-black text-primary-600 dark:text-primary-400 mt-2 uppercase tracking-widest bg-primary-50 dark:bg-primary-500/10 w-fit px-2.5 py-1 rounded-md border border-primary-100 dark:border-primary-500/20 flex items-center gap-1.5"><Globe className="w-3 h-3" /> Online Batch</p>
-                              <div className="flex items-end gap-2 mt-auto pt-2">
-                                <span className="text-[18px] font-black text-slate-900 dark:text-white leading-none">₹{course.price.toLocaleString('en-IN')}</span>
-                                {course.originalPrice && <s className="text-[12px] font-semibold text-slate-400 dark:text-slate-500 leading-none mb-0.5">₹{course.originalPrice.toLocaleString('en-IN')}</s>}
+                                <button className="px-5 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-[13px] rounded-xl hover:bg-primary-600 dark:hover:bg-primary-500 hover:text-white transition-colors active:scale-95 shadow-sm">Apply</button>
                               </div>
                             </div>
-                            <button onClick={() => removeFromCart(id)} className="absolute top-3 right-3 text-slate-300 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 p-2 rounded-full transition-colors active:scale-95" title="Remove item">
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </motion.div>
-                        )
-                      })}
-                    </AnimatePresence>
+
+                            {/* Bill Summary */}
+                            <div className="bg-white dark:bg-slate-800/80 rounded-[1.25rem] p-4 sm:p-5 border border-slate-100 dark:border-slate-700/50 shadow-sm">
+                              <h4 className="font-bold text-slate-900 dark:text-white text-[14px] mb-4 flex items-center gap-2"><Receipt className="w-4 h-4 text-slate-500"/> Bill Summary</h4>
+                              <div className="space-y-3">
+                                <div className="flex justify-between text-[13px]">
+                                  <span className="text-slate-500 dark:text-slate-400 font-medium">Item Total</span>
+                                  <span className="font-bold text-slate-700 dark:text-slate-300">₹{subtotal.toLocaleString('en-IN')}</span>
+                                </div>
+                                {discountAmount > 0 && (
+                                  <div className="flex justify-between text-[13px]">
+                                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">Item Discount</span>
+                                    <span className="font-bold text-emerald-600 dark:text-emerald-400">- ₹{discountAmount.toLocaleString('en-IN')}</span>
+                                  </div>
+                                )}
+                                {tipAmount > 0 && (
+                                  <div className="flex justify-between text-[13px]">
+                                    <span className="text-slate-500 dark:text-slate-400 font-medium">Partner Tip</span>
+                                    <span className="font-bold text-slate-700 dark:text-slate-300">₹{tipAmount}</span>
+                                  </div>
+                                )}
+                                <div className="flex justify-between text-[13px]">
+                                  <span className="text-slate-500 dark:text-slate-400 font-medium">Platform Fee</span>
+                                  <span className="font-bold text-emerald-500 dark:text-emerald-400">FREE</span>
+                                </div>
+                                <div className="pt-3 mt-3 border-t border-slate-100 dark:border-slate-700 border-dashed flex justify-between items-center">
+                                  <span className="font-black text-slate-900 dark:text-white text-[14px]">Grand Total</span>
+                                  <span className="text-[18px] font-black text-slate-900 dark:text-white">₹{finalTotal.toLocaleString('en-IN')}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Saving on this order */}
+                            {discountAmount > 0 && (
+                              <div className="bg-emerald-50 dark:bg-emerald-500/10 rounded-[1.25rem] p-4 border border-emerald-100 dark:border-emerald-500/20 shadow-sm flex items-center justify-between">
+                                <span className="text-emerald-700 dark:text-emerald-400 font-bold text-[13px]">Saving on this order</span>
+                                <span className="text-emerald-700 dark:text-emerald-400 font-black text-[15px]">₹{discountAmount.toLocaleString('en-IN')}</span>
+                              </div>
+                            )}
+
+                            {/* Cancellation Policy */}
+                            <div className="bg-slate-100/80 dark:bg-slate-800/30 rounded-[1.25rem] p-4 border border-slate-200 dark:border-slate-700/50 mb-4">
+                              <h4 className="font-bold text-slate-900 dark:text-white text-[12px] mb-1.5">Cancellation Policy</h4>
+                              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-medium">100% refund if you cancel within 7 days of purchase. No questions asked. Subject to platform terms and conditions.</p>
+                            </div>
+                          </>
+                        );
+                      })()}
                     </motion.div>
                   ) : (
                     <motion.div 
@@ -548,53 +651,33 @@ export const Navbar = () => {
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 50, transition: { duration: 0.2 } }}
-                    className="border-t border-slate-200/60 dark:border-slate-800 p-6 sm:px-8 sm:py-6 bg-white dark:bg-slate-950 z-10 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] dark:shadow-none"
+                    className="border-t border-slate-200/60 dark:border-slate-800 p-4 sm:p-5 bg-white dark:bg-slate-950 z-10 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] dark:shadow-none"
                   >
-              {/* Promo Code Input */}
-              <div className="flex gap-2 mb-4">
-                <div className="relative flex-1">
-                  <Tag className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                  <input type="text" placeholder="Enter Promo Code" className="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-3 py-3 text-[13px] focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 font-bold placeholder:text-slate-400 dark:text-white transition-all shadow-sm" />
-                </div>
-                <button className="px-5 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-[13px] rounded-xl hover:bg-primary-600 dark:hover:bg-primary-500 hover:text-white transition-colors active:scale-95 shrink-0 shadow-sm">
-                  Apply
-                </button>
-              </div>
-
-                  <div className="bg-slate-50 dark:bg-slate-900/80 rounded-[1.25rem] p-5 mb-5 border border-slate-100 dark:border-slate-800">
-                    <div className="space-y-3">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-slate-500 dark:text-slate-400 font-semibold">Subtotal</span>
-                        <span className="font-bold text-slate-700 dark:text-slate-300">
-                          ₹{cartItems.reduce((acc, id) => acc + (COURSES_DB[id]?.originalPrice || COURSES_DB[id]?.price || 0), 0).toLocaleString('en-IN')}
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">Total Savings</span>
-                        <span className="font-black text-emerald-600 dark:text-emerald-400">
-                          - ₹{cartItems.reduce((acc, id) => {
+                    <div className="flex items-center justify-between gap-4">
+                      {(() => {
+                          const subtotal = cartItems.reduce((acc, id) => acc + (COURSES_DB[id]?.originalPrice || COURSES_DB[id]?.price || 0), 0);
+                          const discountAmount = cartItems.reduce((acc, id) => {
                             const c = COURSES_DB[id];
                             return acc + (c ? ((c.originalPrice || c.price) - c.price) : 0);
-                          }, 0).toLocaleString('en-IN')}
-                        </span>
-                      </div>
-                      <div className="pt-4 mt-4 border-t border-slate-200/80 dark:border-slate-800 flex justify-between items-center">
-                        <span className="font-black text-slate-900 dark:text-white text-base">Grand Total</span>
-                        <span className="text-[22px] font-black text-primary-600 dark:text-primary-400">
-                          ₹{cartItems.reduce((acc, id) => acc + (COURSES_DB[id]?.price || 0), 0).toLocaleString('en-IN')}
-                        </span>
-                      </div>
+                          }, 0);
+                          const grandTotal = cartItems.reduce((acc, id) => acc + (COURSES_DB[id]?.price || 0), 0);
+                          const promoDiscount = promoStatus === 'applied' ? grandTotal * 0.5 : 0;
+                          const finalTotal = subtotal - discountAmount - promoDiscount + tipAmount;
+
+                          return (
+                            <>
+                              <div className="flex flex-col pl-2">
+                                <span className="text-[20px] font-black text-slate-900 dark:text-white leading-none">₹{finalTotal.toLocaleString('en-IN')}</span>
+                                <span className="text-[10px] font-bold text-primary-600 dark:text-primary-400 mt-1.5 uppercase tracking-wider">Total Payable</span>
+                              </div>
+                              <button className="flex-1 relative overflow-hidden py-3.5 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 dark:from-white dark:to-slate-100 text-white dark:text-slate-900 font-black text-[14px] shadow-[0_8px_20px_rgba(0,0,0,0.15)] dark:shadow-white/10 hover:shadow-[0_12px_30px_rgba(0,0,0,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 group">
+                                <motion.div animate={{ x: ['-100%', '200%'] }} transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }} className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 dark:via-slate-900/10 to-transparent w-1/2 skew-x-12"></motion.div>
+                                <span className="relative z-10 flex items-center gap-2 tracking-wide">PROCEED TO PAY <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
+                              </button>
+                            </>
+                          )
+                      })()}
                     </div>
-                  </div>
-                  <button className="relative overflow-hidden w-full py-4 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 dark:from-white dark:to-slate-100 text-white dark:text-slate-900 font-black text-[15px] shadow-[0_8px_20px_rgba(0,0,0,0.15)] dark:shadow-white/10 hover:shadow-[0_12px_30px_rgba(0,0,0,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 group">
-                    <motion.div animate={{ x: ['-100%', '200%'] }} transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }} className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 dark:via-slate-900/10 to-transparent w-1/2 skew-x-12"></motion.div>
-                    <span className="relative z-10 flex items-center gap-2 tracking-wide">PROCEED TO CHECKOUT <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
-                  </button>
-                  
-                  <div className="flex items-center justify-center gap-1.5 mt-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                    <span>Secure & Encrypted</span>
-                  </div>
                   </motion.div>
                 )}
               </AnimatePresence>
