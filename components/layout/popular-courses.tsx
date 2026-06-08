@@ -92,7 +92,7 @@ const BatchCard = ({ course }: { course: Course }) => {
   const TagIcon = course.type === 'online' ? Wifi : MapPin
 
   return (
-    <div className={`relative w-full max-w-[320px] bg-white dark:bg-slate-900 rounded-2xl shadow-sm hover:shadow-xl dark:shadow-none dark:border dark:border-slate-800 border-t-[4px] p-4 flex flex-col transition-all hover:-translate-y-1 duration-300 ${borderGradientColor} h-full`}>
+    <div className={`relative w-full max-w-[320px] mx-auto bg-white dark:bg-slate-900 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.06)] hover:shadow-xl dark:shadow-none dark:border dark:border-slate-800 border-t-[4px] p-4 sm:p-5 flex flex-col transition-all hover:-translate-y-1 duration-300 ${borderGradientColor} h-full`}>
       
       {/* Banner Image & Absolute Badges */}
       <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 mb-4">
@@ -142,21 +142,21 @@ const BatchCard = ({ course }: { course: Course }) => {
       </div>
 
       {/* 6. Target Audience */}
-      <div className="flex items-center gap-2 mb-3 bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800">
+      <div className="flex items-center gap-2 mb-4 bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800">
         <Users className="w-3.5 h-3.5 text-primary-500" />
         <span className="text-[12.5px] font-semibold text-slate-700 dark:text-slate-300">{course.target}</span>
       </div>
 
       {/* 7. Dates Section */}
-      <div className="grid grid-cols-2 gap-2 mb-5">
-        <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800">
+      <div className="grid grid-cols-2 gap-3 mb-5">
+        <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2.5 sm:p-3 rounded-lg border border-slate-100 dark:border-slate-800">
           <Calendar className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
           <div className="flex flex-col min-w-0">
             <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Starts</span>
             <span className="text-[11px] font-bold text-slate-900 dark:text-white truncate">{course.startDate}</span>
           </div>
         </div>
-        <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800">
+        <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-2.5 sm:p-3 rounded-lg border border-slate-100 dark:border-slate-800">
           <Calendar className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
           <div className="flex flex-col min-w-0">
             <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Ends</span>
@@ -201,13 +201,13 @@ const BatchCard = ({ course }: { course: Course }) => {
         <div className="grid grid-cols-2 gap-3">
           <a 
             href={course.link} 
-            className="flex items-center justify-center h-9 sm:h-10 border-2 border-primary-500 text-primary-600 dark:text-primary-400 rounded-xl font-bold text-[12.5px] hover:bg-primary-50 dark:hover:bg-primary-500/10 transition-colors"
+          className="flex items-center justify-center h-10 sm:h-11 border-2 border-primary-500 text-primary-600 dark:text-primary-400 rounded-xl font-bold text-[13px] hover:bg-primary-50 dark:hover:bg-primary-500/10 transition-colors"
           >
             Explore
           </a>
           <a 
             href={course.link}
-            className="flex items-center justify-center h-9 sm:h-10 bg-primary-500 text-white rounded-xl font-bold text-[12.5px] hover:bg-primary-600 shadow-md shadow-primary-500/25 transition-all active:scale-95"
+            className="flex items-center justify-center h-10 sm:h-11 bg-primary-500 text-white rounded-xl font-bold text-[13px] hover:bg-primary-600 shadow-md shadow-primary-500/25 transition-all active:scale-95"
           >
             Buy Now
           </a>
@@ -238,15 +238,15 @@ export const PopularCourses = () => {
         </div>
 
         {/* Dynamic Type Filters */}
-        <div className="flex gap-3 mb-6 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+        <div className="flex gap-2 sm:gap-3 mb-6 overflow-x-auto pb-2 w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
           {availableTypes.map((type) => (
             <button
               key={type}
               onClick={() => setActiveType(type)}
-              className={`px-6 py-2.5 rounded-full text-sm font-semibold capitalize transition-all border ${
+              className={`shrink-0 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-[13px] sm:text-sm font-bold capitalize transition-all border ${
                 activeType === type
-                  ? 'bg-[#5a4bda] text-white border-[#5a4bda] shadow-md shadow-[#5a4bda]/20'
-                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-[#5a4bda] hover:text-[#5a4bda] dark:hover:border-[#5a4bda]'
+                  ? 'bg-primary-500 text-white border-primary-500 shadow-md shadow-primary-500/20'
+                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-primary-500 hover:text-primary-600 dark:hover:border-primary-500'
               }`}
             >
               {type} Batches
@@ -255,7 +255,7 @@ export const PopularCourses = () => {
         </div>
 
         {/* Grid Wrapper */}
-        <div className="flex flex-wrap justify-center gap-6 pt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-8 pt-4 justify-items-center w-full">
           {filteredCourses.map((course) => (
             <BatchCard key={course.id} course={course} />
           ))}
