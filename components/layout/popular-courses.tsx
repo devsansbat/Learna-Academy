@@ -92,7 +92,7 @@ const BatchCard = ({ course }: { course: Course }) => {
   const tagColor = course.type === 'online' ? 'bg-primary-500' : 'bg-rose-500'
 
   return (
-    <div className={`relative w-full bg-white dark:bg-slate-900 rounded-2xl shadow-sm hover:shadow-xl dark:shadow-none dark:border dark:border-slate-800 border-t-[4px] p-5 flex flex-col transition-all hover:-translate-y-1 duration-300 ${borderGradientColor} h-full`}>
+    <div className={`relative w-full mx-auto max-w-[360px] lg:max-w-none bg-white dark:bg-slate-900 rounded-2xl shadow-sm hover:shadow-xl dark:shadow-none dark:border dark:border-slate-800 border-t-[4px] p-4 sm:p-5 flex flex-col transition-all hover:-translate-y-1 duration-300 ${borderGradientColor} h-full`}>
       
       {/* 2. Online/Offline Tag */}
       <div className={`absolute left-0 top-0 px-4 py-1.5 text-[11px] font-black text-white uppercase tracking-wider rounded-br-xl rounded-tl-xl shadow-sm z-10 ${tagColor}`}>
@@ -111,7 +111,7 @@ const BatchCard = ({ course }: { course: Course }) => {
       </a>
 
       {/* 4. Banner Image */}
-      <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 mt-6 mb-4">
+      <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 mt-5 sm:mt-6 mb-3 sm:mb-4">
         <Image 
           src={course.banner} 
           alt={course.title}
@@ -123,7 +123,7 @@ const BatchCard = ({ course }: { course: Course }) => {
 
       {/* 5. Title Section */}
       <div className="flex items-start justify-between mb-4 gap-3">
-        <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white line-clamp-2 leading-tight flex-1">
+        <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white line-clamp-2 leading-tight flex-1">
           {course.isNew && (
             <span className="inline-block bg-amber-400 text-amber-950 text-[10px] px-2 py-0.5 rounded mr-2 font-black uppercase align-middle mb-0.5 shadow-sm">
               NEW
@@ -137,21 +137,21 @@ const BatchCard = ({ course }: { course: Course }) => {
       </div>
 
       {/* 6. Target Audience */}
-      <div className="flex items-center gap-2 mb-4 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800">
+      <div className="flex items-center gap-2 mb-3 sm:mb-4 bg-slate-50 dark:bg-slate-800/50 p-2.5 sm:p-3 rounded-lg border border-slate-100 dark:border-slate-800">
         <Users className="w-4 h-4 text-primary-500" />
         <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">{course.target}</span>
       </div>
 
       {/* 7. Dates Section */}
       <div className="grid grid-cols-2 gap-3 mb-5">
-        <div className="flex items-center gap-2.5 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800">
+        <div className="flex items-center gap-2.5 bg-slate-50 dark:bg-slate-800/50 p-2.5 sm:p-3 rounded-lg border border-slate-100 dark:border-slate-800">
           <Calendar className="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0" />
           <div className="flex flex-col min-w-0">
             <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Starts</span>
             <span className="text-xs font-bold text-slate-900 dark:text-white truncate">{course.startDate}</span>
           </div>
         </div>
-        <div className="flex items-center gap-2.5 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-800">
+        <div className="flex items-center gap-2.5 bg-slate-50 dark:bg-slate-800/50 p-2.5 sm:p-3 rounded-lg border border-slate-100 dark:border-slate-800">
           <Calendar className="w-4 h-4 text-slate-400 dark:text-slate-500 shrink-0" />
           <div className="flex flex-col min-w-0">
             <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Ends</span>
@@ -170,9 +170,9 @@ const BatchCard = ({ course }: { course: Course }) => {
         )}
 
         {/* 9. Price Section */}
-        <div className="border-t border-slate-100 dark:border-slate-800 pt-5 mb-5">
+        <div className="border-t border-slate-100 dark:border-slate-800 pt-4 sm:pt-5 mb-4 sm:mb-5">
           <div className="flex flex-wrap items-baseline gap-2 mb-2">
-            <span className="text-2xl font-black text-slate-900 dark:text-white">
+            <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
               ₹{course.price.toLocaleString('en-IN')}
             </span>
             {course.originalPrice && (
@@ -196,13 +196,13 @@ const BatchCard = ({ course }: { course: Course }) => {
         <div className="grid grid-cols-2 gap-3">
           <a 
             href={course.link} 
-            className="flex items-center justify-center h-12 border-2 border-primary-500 text-primary-600 dark:text-primary-400 rounded-xl font-bold text-[13px] sm:text-sm hover:bg-primary-50 dark:hover:bg-primary-500/10 transition-colors"
+            className="flex items-center justify-center h-10 sm:h-11 border-2 border-primary-500 text-primary-600 dark:text-primary-400 rounded-xl font-bold text-xs sm:text-sm hover:bg-primary-50 dark:hover:bg-primary-500/10 transition-colors"
           >
             Explore
           </a>
           <a 
             href={course.link}
-            className="flex items-center justify-center h-12 bg-primary-500 text-white rounded-xl font-bold text-[13px] sm:text-sm hover:bg-primary-600 shadow-md shadow-primary-500/25 transition-all active:scale-95"
+            className="flex items-center justify-center h-10 sm:h-11 bg-primary-500 text-white rounded-xl font-bold text-xs sm:text-sm hover:bg-primary-600 shadow-md shadow-primary-500/25 transition-all active:scale-95"
           >
             Buy Now
           </a>
