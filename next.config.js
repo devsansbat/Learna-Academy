@@ -1,7 +1,23 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === 'production'
+
 const nextConfig = {
+  output: 'export',
+  trailingSlash: true,
+  basePath: isProd ? '/Learna-Academy' : '',
+  assetPrefix: isProd ? '/Learna-Academy/' : '',
   images: {
-    domains: ['images.unsplash.com', 'ui-avatars.com'],
+    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ui-avatars.com',
+      },
+    ],
   },
   eslint: {
     ignoreDuringBuilds: true,

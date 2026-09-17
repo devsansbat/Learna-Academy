@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const poppins = Poppins({ weight: ['300', '400', '500', '600', '700', '800'], subsets: ['latin'], variable: '--font-poppins' })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://devsansbat.github.io/Learna-Academy'),
   title: 'Learna Academy - Transform Your Learning Journey',
   description: 'India\'s leading EdTech platform with AI-powered learning, live classes, and personalized guidance.',
   keywords: 'online learning, edtech, courses, certification, upskilling',
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Learna Academy - Transform Your Learning Journey',
     description: 'Join 1M+ learners and transform your career with industry-recognized courses',
-    images: ['https://learna.com/og-image.jpg'],
+    images: ['/og-image.jpg'],
   },
 }
 

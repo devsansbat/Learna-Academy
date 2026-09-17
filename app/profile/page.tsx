@@ -1,20 +1,14 @@
+'use client'
+
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-unescaped-entities */
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { User, Mail, Phone, MapPin, Lock } from 'lucide-react'
 
-export const metadata = {
-  title: 'Profile - Learna Academy',
-  description: 'Manage your Learna Academy profile, subscriptions, and preferences.',
-}
-
-export default async function ProfilePage({
-  searchParams,
-}: {
-  searchParams?: Promise<{ [key: string]: string | string[] | undefined }> | { [key: string]: string | string[] | undefined }
-}) {
-  const params = await searchParams;
-  const tab = params?.tab || 'account'
+export default function ProfilePage() {
+  const searchParams = useSearchParams()
+  const tab = searchParams.get('tab') || 'account'
 
   return (
     <section className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300 py-24">
