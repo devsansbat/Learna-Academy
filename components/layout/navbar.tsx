@@ -338,77 +338,164 @@ export const Navbar = () => {
     { name: 'Doubt Solving', href: '/doubt-solving' },
   ]
 
-  const DropdownMenu = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 10, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 10, scale: 0.98 }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
-      className="absolute top-full mt-3 left-1/2 -translate-x-1/2 z-[70] origin-top"
-    >
-      <div className="w-auto max-w-[calc(100vw-2rem)] lg:max-w-4xl rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-slate-200/80 dark:border-slate-800/80 shadow-2xl overflow-hidden">
-        <div className="flex">
-          {/* Left Panel: Categories */}
-          <div className="w-[240px] shrink-0 p-4 border-r border-slate-100 dark:border-slate-800/60">
-            <div className="flex flex-col gap-1">
-              {navLinks.find(l => l.name === 'All Courses')?.dropdown?.map(category => (
-                <button
-                  key={category.title}
-                  onMouseEnter={() => setActiveDropdownCategory(category.title)}
-                  className={`w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-sm font-bold ${
-                    activeDropdownCategory === category.title
-                      ? 'bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400'
-                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100/70 dark:hover:bg-slate-800/70'
-                  }`}
+  const DropdownMenu = () => {
+    const activeCategory =
+      navLinks.find((l) => l.name === 'All Courses')?.dropdown?.find((c) => c.title === activeDropdownCategory) ||
+      navLinks.find((l) => l.name === 'All Courses')?.dropdown?.[0]
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 10, scale: 0.98 }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
+        className="absolute top-full mt-3 left-1/2 -translate-x-1/2 z-[70] origin-top"
+      >
+        <div className="w-auto max-w-[calc(100vw-2rem)] lg:max-w-5xl rounded-[28px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-slate-200/80 dark:border-slate-800/80 shadow-[0_25px_80px_rgba(15,23,42,0.18)] overflow-hidden">
+          <div className="flex">
+            {/* Left Panel: Categories */}
+            <div className="w-[260px] shrink-0 border-r border-slate-100 dark:border-slate-800/70 bg-slate-50/80 dark:bg-slate-950/40 p-3">
+              <div className="mb-3 px-2 pt-1">
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">Explore tracks</p>
+              </div>
+              <div className="flex flex-col gap-2">
+                {navLinks.find(l => l.name === 'All Courses')?.dropdown?.map(category => {
+                  const isActive = activeDropdownCategory === category.title
+                  const Icon = category.icon
+
+                  return (
+                    <button
+                      key={category.title}
+                      onMouseEnter={() => setActiveDropdownCategory(category.title)}
+                      className={`group w-full text-left rounded-2xl border px-3 py-3 transition-all duration-200 ${
+                        isActive
+                          ? 'border-primary-200 dark:border-primary-500/30 bg-primary-50/80 dark:bg-primary-500/10 shadow-sm'
+                          : 'border-transparent bg-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-800/50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${isActive ? 'bg-primary-500 text-white' : 'bg-slate-200/80 dark:bg-slate-800 text-slate-500 dark:text-slate-400 group-hover:text-primary-500'}`}>
+                          <Icon className="h-4 w-4" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className={`text-sm font-bold ${isActive ? 'text-primary-700 dark:text-primary-300' : 'text-slate-700 dark:text-slate-200'}`}>
+                            {category.title}
+                          </div>
+                          <div className="text-[11px] text-slate-400 dark:text-slate-500">
+                            {category.subItems.length} programs
+                          </div>
+                        </div>
+                        <ArrowRight className={`h-4 w-4 transition-transform ${isActive ? 'translate-x-0 text-primary-500' : 'text-slate-300 group-hover:translate-x-0.5 group-hover:text-primary-500'}`} />
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Right Panel: Content */}
+            <div className="flex-1 p-5 lg:p-6">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCategory?.title || 'courses'}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                  className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]"
                 >
-                  <category.icon className={`w-4 h-4 transition-colors ${activeDropdownCategory === category.title ? 'text-primary-500' : 'text-slate-400'}`} />
-                  <span>{category.title}</span>
-                </button>
-              ))}
+                  <div>
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-500">Popular in {activeCategory?.title}</p>
+                        <h3 className="mt-1 text-xl font-black text-slate-900 dark:text-white">Build job-ready skills</h3>
+                      </div>
+                      <Link
+                        href="/courses"
+                        onClick={() => setIsDesktopMenuHovered(false)}
+                        className="inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-200 transition hover:border-primary-200 hover:text-primary-600 dark:hover:text-primary-300"
+                      >
+                        View all
+                        <ChevronRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </div>
+
+                    <div className="grid gap-2.5 sm:grid-cols-2">
+                      {activeCategory?.subItems.map((item) => {
+                        const Icon = item.icon
+                        return (
+                          <Link
+                            key={item.title}
+                            href={item.href}
+                            onClick={() => setIsDesktopMenuHovered(false)}
+                            className="group flex items-center justify-between rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-slate-50/80 dark:bg-slate-800/60 p-3 transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-500/30 hover:bg-primary-50/60 dark:hover:bg-primary-500/10 hover:shadow-md"
+                          >
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white dark:bg-slate-900 shadow-sm text-primary-600 dark:text-primary-400">
+                                <Icon className="h-4 w-4" />
+                              </div>
+                              <div className="min-w-0">
+                                <p className="truncate text-sm font-bold text-slate-800 dark:text-slate-100 group-hover:text-primary-600 dark:group-hover:text-primary-300">{item.title}</p>
+                                <p className="text-[11px] text-slate-500 dark:text-slate-400">Career-focused learning</p>
+                              </div>
+                            </div>
+                            <ArrowRight className="h-4 w-4 shrink-0 text-slate-300 transition-transform group-hover:translate-x-1 group-hover:text-primary-500" />
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="mb-3 flex items-center justify-between">
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Spotlight</h3>
+                    </div>
+
+                    <Link
+                      href="/courses/nextjs"
+                      onClick={() => setIsDesktopMenuHovered(false)}
+                      className="group block overflow-hidden rounded-[24px] border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:border-primary-200 dark:hover:border-primary-500/30"
+                    >
+                      <div className="relative h-36 overflow-hidden">
+                        <img
+                          src={activeCategory?.image || 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=800&h=600&fit=crop'}
+                          alt={activeCategory?.title || 'Featured course'}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/10 to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                          <span className="inline-flex rounded-full bg-white/15 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm">
+                            Featured
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="p-4">
+                        <div className="mb-2 flex items-center justify-between text-slate-400 dark:text-slate-500">
+                          <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Mentor-led</span>
+                          <span className="text-[10px] font-bold uppercase tracking-[0.2em]">4.9 ★</span>
+                        </div>
+                        <h4 className="text-lg font-black text-slate-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                          Next.js Advanced
+                        </h4>
+                        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                          Build scalable, production-ready web apps with real-world architecture and deployment patterns.
+                        </p>
+                        <div className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-primary-600 dark:text-primary-400">
+                          Explore track
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
-
-          {/* Right Panel: Content */}
-          <div className="flex-1 p-6 relative overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeDropdownCategory}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 10 }}
-                transition={{ duration: 0.25, ease: 'easeInOut' }}
-                className="grid grid-cols-2 gap-6"
-              >
-                {/* Sub-items */}
-                <div>
-                  <h3 className="font-bold text-slate-900 dark:text-white mb-4 px-2">Courses</h3>
-                  <div className="space-y-1">
-                    {navLinks.find(l => l.name === 'All Courses')?.dropdown?.find(c => c.title === activeDropdownCategory)?.subItems.map(item => (
-                      <Link key={item.title} href={item.href} onClick={() => setIsDesktopMenuHovered(false)} className="group flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors">
-                        <p className="font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{item.title}</p>
-                        <ArrowRight className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 opacity-0 group-hover:opacity-100 group-hover:text-primary-500 group-hover:translate-x-1 transition-all" />
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Spotlight */}
-                <div>
-                  <h3 className="font-bold text-slate-900 dark:text-white mb-4 px-2">Spotlight</h3>
-                  <Link href="/courses/nextjs" onClick={() => setIsDesktopMenuHovered(false)} className="group block rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-800 hover:border-primary-200 dark:hover:border-primary-500/40 hover:shadow-lg hover:shadow-primary-500/10 transition-all duration-300">
-                    <div className="p-4">
-                      <h4 className="font-bold text-slate-800 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors text-sm">Featured: Next.js Advanced</h4>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Build scalable, production-ready web apps.</p>
-                    </div>
-                  </Link>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
         </div>
-      </div>
-    </motion.div>
-  )
+      </motion.div>
+    )
+  }
 
   useEffect(() => {
     if (isDesktopMenuHovered && activeDesktopSubmenu === 'All Courses') {
