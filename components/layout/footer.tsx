@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿'use client'
+﻿﻿﻿﻿﻿﻿﻿﻿'use client'
 
 import Link from 'next/link'
 import { Facebook, Twitter, Youtube, Linkedin, Instagram, Mail, Phone, MapPin } from 'lucide-react'
@@ -49,7 +49,7 @@ export const Footer = () => {
               </motion.div>
               <motion.span 
                 animate={{ backgroundPosition: ['0%', '200%'] }}
-                transition={{ duration: 4, ease: "linear", repeat: Infinity }}
+                transition={{ duration: 4, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
                 className="font-bold text-xl bg-gradient-to-r from-white via-primary-400 to-white bg-[length:200%_auto] bg-clip-text text-transparent tracking-tight"
               >
                 Learna Academy
@@ -63,7 +63,7 @@ export const Footer = () => {
                 <a
                   key={index}
                   href="#"
-                  className="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-colors"
+                  className="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary-500 hover:text-white hover:border-primary-500 dark:hover:bg-primary-500 dark:hover:border-primary-500 transition-colors"
                 >
                   <Icon className="w-4 h-4" />
                 </a>
@@ -78,7 +78,7 @@ export const Footer = () => {
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="text-sm text-slate-400 hover:text-primary-400 transition-colors">
+                    <Link href={link.href} className="text-sm text-slate-400 hover:text-primary-400 dark:hover:text-primary-400 transition-colors">
                       {link.name}
                     </Link>
                   </li>
@@ -93,11 +93,11 @@ export const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start space-x-3 text-sm text-slate-400">
                 <Mail className="w-4 h-4 text-primary-400 shrink-0 mt-0.5" />
-                <span className="hover:text-white transition-colors cursor-pointer">support@learna.com</span>
+                <span className="hover:text-white dark:hover:text-white transition-colors cursor-pointer">support@learna.com</span>
               </li>
               <li className="flex items-start space-x-3 text-sm text-slate-400">
                 <Phone className="w-4 h-4 text-primary-400 shrink-0 mt-0.5" />
-                <span className="hover:text-white transition-colors cursor-pointer">+91 98765 43210</span>
+                <span className="hover:text-white dark:hover:text-white transition-colors cursor-pointer">+91 98765 43210</span>
               </li>
               <li className="flex items-start space-x-3 text-sm text-slate-400">
                 <MapPin className="w-4 h-4 text-primary-400 shrink-0 mt-0.5" />
@@ -114,7 +114,7 @@ export const Footer = () => {
           </p>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-slate-500">
             {bottomLinks.map((item) => (
-              <Link key={item.name} href={item.href} className="hover:text-slate-300 transition-colors">
+              <Link key={item.name} href={item.href} className="hover:text-slate-300 dark:hover:text-slate-300 transition-colors">
                 {item.name}
               </Link>
             ))}
@@ -134,7 +134,7 @@ export const Footer = () => {
             <h1 className="w-full flex justify-center font-black uppercase whitespace-nowrap tracking-tighter leading-none relative z-10 px-4" style={{ fontSize: "clamp(1.5rem, 7.5vw, 10rem)" }}>
               <motion.span 
                 animate={{ backgroundPosition: ['200% center', '-200% center'] }}
-                transition={{ duration: 8, ease: "linear", repeat: Infinity }}
+                transition={{ duration: 8, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
                 className="bg-gradient-to-r from-slate-800 via-primary-500 to-slate-800 bg-[length:200%_auto] bg-clip-text text-transparent"
               >
                 LEARNA ACADEMY

@@ -1,9 +1,10 @@
-﻿﻿﻿﻿'use client'
+﻿﻿﻿﻿﻿﻿'use client'
 
 import { useEffect, useState, useRef } from 'react'
 import { ShoppingCart, Check, Heart, ArrowRight, BookOpen, Sparkles, Calendar, Target, MessageCircle } from 'lucide-react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { Categories } from './Categories'
 
 const courses = [
   {
@@ -175,6 +176,7 @@ export const PopularCourses = () => {
   }
 
   return (
+    <>
     <section className="relative py-24 bg-slate-50 dark:bg-slate-950 transition-colors duration-300 overflow-hidden">
       {/* Subtle Background Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]"></div>
@@ -227,8 +229,8 @@ export const PopularCourses = () => {
 
             return (
               <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 key={course.id}
@@ -333,5 +335,7 @@ export const PopularCourses = () => {
         </div>
       </div>
     </section>
+    <Categories />
+    </>
   )
 }

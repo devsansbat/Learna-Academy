@@ -72,7 +72,7 @@ export const TopEducators = () => {
               transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
               viewport={{ once: true }}
               key={edu.name}
-              className="group flex w-[85vw] sm:w-[280px] shrink-0 snap-center flex-col items-center rounded-[20px] border border-slate-200/50 bg-white p-5 text-center shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-indigo-500/10"
+              className="group flex w-[calc(100vw-60px)] sm:w-[280px] shrink-0 snap-center flex-col items-center rounded-[20px] border border-slate-200/50 bg-white p-5 text-center shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-indigo-500/10"
             >
               <div className="relative mb-4 h-24 w-24 shrink-0">
                 <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-primary-500 to-indigo-500 blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-30"></div>
